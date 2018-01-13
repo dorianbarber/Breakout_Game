@@ -5,8 +5,9 @@ was the Worm version. In this version there were a numerous amount of powerups
 that fell from the blocks. Essentially the way the game was structured it relied
 heavily on those powerups to move onto the next level. Another variant I thought
 was interesting was the Warloads version. I liked this one because of the concept
-of breaking the blocks in order to get to some goal or target. I think I will try 
-to incorporate this aspect into my own breakout game. 
+of breaking the blocks in order to get to some goal or target. I will try 
+to incorporate this aspect into my own breakout game. The player will have to reach
+the target in order to move onto the next level. 
 
 The levels I intend to build will increase in difficulty due to an increasing amount
 of blocks. The goal of the game will be able to hit the ball into an end target which
@@ -22,9 +23,27 @@ that will not break upon the ball hitting it for any number of times.
 
 There are several powerups that will be included. One powerup will be temporarily giving
 a x2 score bonus. Another powerup will be to temporarily expand the size of the paddle. 
-Finally there will be a powerup that will give an extra life to the player if retrieved. 
+Another powerup will be to give the ball double damage. While the ball has double damage
+powerup it will deal two hits to a block instead of one. Finally there will be a powerup
+that will give an extra life to the player if retrieved. 
 ***more powerups may be added during the implementation and will be added below
 
 
 
+Some cheat codes that will be included will be as follows:
+R --> reset the level
+C --> automatically clear the level
+U --> (toggle) unlimited lives
+B --> go back to a previous level
+***more may be added during implementation and will be added below
+
+
+
+The substantial extra I intend to add is to keep track of the streak. Streak is defined
+as the number of blocks the ball hits before touching the paddle or falling off the screen.
+The streak will be recorded and the points the player gets increases during a streak. I 
+think this is a substantial addition because it prompts the player to develop a strategy to 
+clear the blocks in a way that will garner them the highest streak and thus a higher score.
+This is also a substantial addition because not only is there incentive for the player to
+reach the target but also to break as many blocks as possible before reaching the target. 
 
