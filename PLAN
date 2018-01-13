@@ -8,3 +8,23 @@ was interesting was the Warloads version. I liked this one because of the concep
 of breaking the blocks in order to get to some goal or target. I think I will try 
 to incorporate this aspect into my own breakout game. 
 
+The levels I intend to build will increase in difficulty due to an increasing amount
+of blocks. The goal of the game will be able to hit the ball into an end target which
+will complete the level. The most basic level will include one line of blocks. Each 
+consecutive level will contain another row of blocks with each row of blocks requiring 
+one extra hit to break. 
+
+There will be multiple different variables a block can contain. One of them being the 
+number of hits the block requires to break. Another variable will be the chance of a
+powerup dropping from breaking the block. This factor will scale slightly with the
+number of hits required to break the block. Lastly there will be a permanent block
+that will not break upon the ball hitting it for any number of times. 
+
+There are several powerups that will be included. One powerup will be temporarily giving
+a x2 score bonus. Another powerup will be to temporarily expand the size of the paddle. 
+Finally there will be a powerup that will give an extra life to the player if retrieved. 
+***more powerups may be added during the implementation and will be added below
+
+
+
+
