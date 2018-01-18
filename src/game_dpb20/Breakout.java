@@ -15,11 +15,12 @@ public class Breakout extends Application{
 	public static final int SIZE = 500;
 	
 	public static final Paint BACKGROUND = Color.BURLYWOOD;
-	public static final Paint BALL_COLOR = Color.CRIMSON;
-	public static final Paint PADDLE_COLOR = Color.AQUA;
+	
+	public static final int paddleX = SIZE/2;
+	public static final int paddleY = SIZE - 50;
 	
 	private Scene myScene;
-	private Rectangle myPaddle;
+	private Paddle myPaddle;
 	private Bouncer myBall;
 	
 	
@@ -32,8 +33,18 @@ public class Breakout extends Application{
 	private Scene setupGame(int width, int height, Paint background) {
 		Group root = new Group();
 		Scene scene = new Scene(root, width, height, background);
+		
 		myBall = new Bouncer();
+		myBall.setCenterX(paddleX);
+		myBall.setCenterY(paddleY - myBall.getRadius());
+		
+		
+		myPaddle = new Paddle();
+		myPaddle.setX(paddleX - myPaddle.getWidth()/2);
+		myPaddle.setY(paddleY);
+		
 		root.getChildren().add(myBall);
+		root.getChildren().add(myPaddle);
 		return scene;
 	}
 	
