@@ -2,6 +2,7 @@ package game_dpb20;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
@@ -45,12 +46,23 @@ public class Breakout extends Application{
 		
 		root.getChildren().add(myBall);
 		root.getChildren().add(myPaddle);
+		
+		scene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
 		return scene;
 	}
 	
 	
 	
-	
+	private void handleKeyInput(KeyCode code) {
+		if(code == KeyCode.RIGHT
+				&& myPaddle.getX() + myPaddle.getWidth() <= SIZE) {
+			myPaddle.setX(myPaddle.getX() + myPaddle.getSpeed());
+		}
+		else if(code == KeyCode.LEFT 
+				&& myPaddle.getX() >= 0) {
+			myPaddle.setX(myPaddle.getX() - myPaddle.getSpeed());
+		}
+	}
 	
 	public static void main (String[] args) {
 		launch(args);
