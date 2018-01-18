@@ -20,7 +20,7 @@ public class Breakout extends Application{
 	
 	private Scene myScene;
 	private Rectangle myPaddle;
-	private Circle myBall;
+	private Bouncer myBall;
 	
 	
 	public void start(Stage stage) {
@@ -32,6 +32,8 @@ public class Breakout extends Application{
 	private Scene setupGame(int width, int height, Paint background) {
 		Group root = new Group();
 		Scene scene = new Scene(root, width, height, background);
+		myBall = new Bouncer();
+		root.getChildren().add(myBall);
 		return scene;
 	}
 	
