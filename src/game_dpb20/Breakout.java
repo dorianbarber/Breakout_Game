@@ -51,9 +51,12 @@ public class Breakout extends Application{
 		return scene;
 	}
 	
-	
+	private void step (double elapsedTime) {
+		
+	}
 	
 	private void handleKeyInput(KeyCode code) {
+		//the additional checks for if the paddle is about to go off the screen
 		if(code == KeyCode.RIGHT
 				&& myPaddle.getX() + myPaddle.getWidth() <= SIZE) {
 			myPaddle.setX(myPaddle.getX() + myPaddle.getSpeed());
