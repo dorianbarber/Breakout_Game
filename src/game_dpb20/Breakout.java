@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -65,6 +66,8 @@ public class Breakout extends Application{
 	}
 	
 	private void step (double elapsedTime) {
+		//checks to see if the player has started the game
+		//which prompts the ball to start moving
 		if(gameStart) {
 			if(!myBall.checkXBounds(SIZE)) {
 				myBall.bounceX();
@@ -75,6 +78,12 @@ public class Breakout extends Application{
 				myBall.bounceY();
 			}
 			myBall.setCenterY(myBall.getCenterY() + myBall.getYVel() * elapsedTime);
+		}
+		
+		//checks to see if the ball intersects the paddle
+		Shape intersect = Shape.intersect(myPaddle, myBall);
+		if(intersect.getBoundsInLocal().getWidth() != -1) {
+			myBall.bounceY();
 		}
 	}
 	

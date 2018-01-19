@@ -7,8 +7,8 @@ public class Bouncer extends Circle{
 	private static Color myColor = Color.LINEN;
 	private static int myRadius = 8;
 	
-	private int xvel = -50;
-	private int yvel = -50;
+	private int xvel = -100;
+	private int yvel = -100;
 	
 	public Bouncer() {
 		super(myRadius, myColor);
