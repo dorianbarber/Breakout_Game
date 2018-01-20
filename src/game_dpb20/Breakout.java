@@ -108,10 +108,18 @@ public class Breakout extends Application{
 		
 		for(Block b: gameBlocks) {
 			Shape blockAndBall = Shape.intersect(myBall, b);
-			if(blockAndBall.getBoundsInLocal().getWidth() != -1 && !b.checkBroke()) {
+			if(blockAndBall.getBoundsInLocal().getWidth() != -1) {
 				b.hit();
-				myBall.bounceX();
-				myBall.bounceY();
+				double ballX = blockAndBall.getLayoutX();
+				if(ballX == b.getX() || ballX == b.getX()+Block.getBlockWidth()) {
+					myBall.bounceX();
+				}
+				else {
+					myBall.bounceY();
+				}
+			}
+			if(b.checkBroke()) {
+				b.deadBlock();
 			}
 		}
 		
