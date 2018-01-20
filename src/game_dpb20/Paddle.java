@@ -12,7 +12,6 @@ public class Paddle extends Rectangle{
 	private int lives = 3;
 	
 	
-	
 	public Paddle() {
 		super(WIDTH, HEIGHT, myColor);
 	}

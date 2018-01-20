@@ -26,13 +26,14 @@ public class Breakout extends Application{
 	private Scene myScene;
 	private Paddle myPaddle;
 	private Bouncer myBall;
+	private int level = 1;
 	
 	private boolean gameStart;
 	
 	
 	public void start(Stage stage) {
 		//sets up scene
-		myScene = setupGame(SIZE, SIZE, BACKGROUND);
+		myScene = setupGame(SIZE, SIZE, BACKGROUND, level);
 		stage.setScene(myScene);
 		stage.show();
 		
@@ -45,7 +46,7 @@ public class Breakout extends Application{
 		
 	}
 	
-	private Scene setupGame(int width, int height, Paint background) {
+	private Scene setupGame(int width, int height, Paint background, int levelNumb) {
 		Group root = new Group();
 		Scene scene = new Scene(root, width, height, background);
 		
@@ -57,6 +58,17 @@ public class Breakout extends Application{
 		myPaddle = new Paddle();
 		myPaddle.setX(paddleX - myPaddle.getWidth()/2);
 		myPaddle.setY(paddleY);
+		
+		//sets up the blocks
+		for(int row = 1; row <= levelNumb; row++) {
+			int ypos = SIZE / 2 - row*Block.getBlockHeight();
+			for(int xpos = 0; xpos < SIZE; xpos += Block.getBlockWidth()) {
+				Block b = new Block(row);
+				b.setX(xpos);
+				b.setY(ypos);
+				root.getChildren().add(b);
+			}
+		}
 		
 		root.getChildren().add(myBall);
 		root.getChildren().add(myPaddle);

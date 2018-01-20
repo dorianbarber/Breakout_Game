@@ -10,6 +10,7 @@ public class Bouncer extends Circle{
 	private int xvel = -100;
 	private int yvel = -100;
 	
+	
 	public Bouncer() {
 		super(myRadius, myColor);
 	}
