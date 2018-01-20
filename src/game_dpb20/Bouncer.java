@@ -14,6 +14,7 @@ public class Bouncer extends Circle{
 		super(myRadius, myColor);
 	}
 	
+	
 	public void bounceX() {
 		xvel = -xvel;
 	}
@@ -29,6 +30,8 @@ public class Bouncer extends Circle{
 	public int getYVel() {
 		return yvel;
 	}
+	
+	
 	
 	//checks if the ball has hit the y border (top of the screen)
 	//if so it returns false

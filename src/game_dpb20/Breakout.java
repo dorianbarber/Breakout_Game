@@ -85,6 +85,7 @@ public class Breakout extends Application{
 		if(intersect.getBoundsInLocal().getWidth() != -1) {
 			myBall.bounceY();
 		}
+		
 	}
 	
 	private void handleKeyInput(KeyCode code) {
