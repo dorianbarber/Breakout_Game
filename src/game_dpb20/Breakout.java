@@ -1,4 +1,6 @@
 package game_dpb20;
+import java.util.ArrayList;
+
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -27,8 +29,11 @@ public class Breakout extends Application{
 	private Paddle myPaddle;
 	private Bouncer myBall;
 	private int level = 1;
-	
 	private boolean gameStart;
+	
+	//keeps track of the blocks in the game
+	private ArrayList<Block> gameBlocks;
+	
 	
 	
 	public void start(Stage stage) {
@@ -49,6 +54,8 @@ public class Breakout extends Application{
 	private Scene setupGame(int width, int height, Paint background, int levelNumb) {
 		Group root = new Group();
 		Scene scene = new Scene(root, width, height, background);
+		gameBlocks = new ArrayList<>();
+		gameBlocks.clear();
 		
 		myBall = new Bouncer();
 		myBall.setCenterX(paddleX);
@@ -66,6 +73,7 @@ public class Breakout extends Application{
 				Block b = new Block(row);
 				b.setX(xpos);
 				b.setY(ypos);
+				gameBlocks.add(b);
 				root.getChildren().add(b);
 			}
 		}
@@ -96,6 +104,15 @@ public class Breakout extends Application{
 		Shape intersect = Shape.intersect(myPaddle, myBall);
 		if(intersect.getBoundsInLocal().getWidth() != -1) {
 			myBall.bounceY();
+		}
+		
+		for(Block b: gameBlocks) {
+			Shape blockAndBall = Shape.intersect(myBall, b);
+			if(blockAndBall.getBoundsInLocal().getWidth() != -1 && !b.checkBroke()) {
+				b.hit();
+				myBall.bounceX();
+				myBall.bounceY();
+			}
 		}
 		
 	}
