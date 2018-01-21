@@ -39,15 +39,18 @@ public class Breakout extends Application{
 	private Paddle myPaddle;
 	private Bouncer myBall;
 	private int level = 1;
+	private int streak;
 	private boolean gameStart;
+	
 	//keeps track of the blocks in the game
 	private ArrayList<Block> gameBlocks;
+	//keeps track of the powerups in the game
 	private ArrayList<Powerup> powerups;
 	
+	//instance variables for creating the canvas
 	private int score;
-	private Canvas canvas = new Canvas(500,500);
+	private Canvas canvas = new Canvas(SIZE,SIZE);
 	private GraphicsContext gc = canvas.getGraphicsContext2D();
-	private int streak;
 	
 	public void start(Stage stage) {
 		st = stage;
@@ -56,14 +59,12 @@ public class Breakout extends Application{
 		//sets up scenes and font for GraphicsContext
 		sceneSetUp();
 		
-		
 		//sets up game loop
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(SECOND_DELAY));
 		Timeline animation = new Timeline(); 
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
 		animation.play();
-		
 	}
 	
 	private Scene setupGame(int width, int height, Paint background, int levelNumb) {
@@ -80,10 +81,8 @@ public class Breakout extends Application{
 		myPaddle.setX(paddleX - myPaddle.getWidth()/2);
 		myPaddle.setY(paddleY);
 		
-		
 		myBall = new Bouncer();
-		myBall.setCenterX(myPaddle.getX() + myPaddle.getWidth()/2);
-		myBall.setCenterY(myPaddle.getY() - myBall.getRadius());
+		resetBall();
 		
 		//Canvas for scoreboard
 		root.getChildren().add(canvas);
@@ -95,7 +94,6 @@ public class Breakout extends Application{
 		gc.setFont(new Font(20));
 		gc.fillText("Level: " +level, SIZE/2, SIZE - gc.getFont().getSize());
 		gc.setTextAlign(TextAlignment.LEFT);
-		
 		
 		//sets up the blocks
 		for(int row = 1; row <= levelNumb; row++) {
@@ -118,10 +116,16 @@ public class Breakout extends Application{
 	
 	private void step (double elapsedTime) {
 		//updates the score by filling over the previous scoreboard
+		if(myBall.getCenterY() >= SIZE && myPaddle.getLives() > 0) {
+			resetBall();
+			myPaddle.loseLife();
+			gameStart = false;
+		}
 		gc.setFill(BACKGROUND);
 		gc.fillRect(0, 0, 300, 200);
 		gc.setFill(Color.BLACK);
-		gc.fillText("Score: " + score + "    Streak: " + streak, 10, 30);
+		gc.fillText("Score: " + score + "    Streak: " + streak 
+				+"    Lives: " +myPaddle.getLives(), 10, 30);
 		
 		//checks to see if the player has started the game
 		//which prompts the ball to start moving
@@ -136,6 +140,7 @@ public class Breakout extends Application{
 			}
 			myBall.setCenterY(myBall.getCenterY() + myBall.getYVel() * elapsedTime);
 		}
+		
 		
 		//checks to see if the ball intersects the paddle
 		Shape intersect = Shape.intersect(myPaddle, myBall);
@@ -156,9 +161,6 @@ public class Breakout extends Application{
 			Shape blockAndBall = Shape.intersect(myBall, b);
 			if(blockAndBall.getBoundsInLocal().getWidth() != -1 && !b.checkBroke()) {
 				b.hit();
-				//increases the streak count when the ball hits a block
-				
-				//double ballX = blockAndBall.getLayoutX();
 				if(makesSideContact(b)) {
 					myBall.bounceX();
 				}
@@ -186,10 +188,14 @@ public class Breakout extends Application{
 				p.setCenterY(p.getCenterY() + p.getVel()*elapsedTime);
 				Shape powAndBall = Shape.intersect(myPaddle, p);
 				//if it makes contact with the paddle or goes off the screen
-				if(powAndBall.getBoundsInLocal().getWidth() != -1 
-						|| p.getCenterY() >= SIZE) {
-					root.getChildren().remove(p);
-					powerups.remove(p);
+				if(powAndBall.getBoundsInLocal().getWidth() != -1) {
+					myPaddle.powered(p);
+					removePow(p);
+					if(powerups.isEmpty()) {
+						break;
+					}
+				} else if(p.getCenterY() >= SIZE) {
+					removePow(p);
 					if(powerups.isEmpty()) {
 						break;
 					}
@@ -228,8 +234,7 @@ public class Breakout extends Application{
 			//starts the ball motion if it is not
 			if(myBall.getCenterY() >= SIZE) {
 				gameStart = false;
-				myBall.setCenterX(myPaddle.getX() + myPaddle.getWidth()/2);
-				myBall.setCenterY(myPaddle.getY() - myBall.getRadius());
+				resetBall();
 			}
 			else {
 				gameStart = true;
@@ -266,9 +271,21 @@ public class Breakout extends Application{
 	}
 	
 	//Checks to see if the ball made contact with the sides of the Block
-	public boolean makesSideContact(Block rect) {
+	private boolean makesSideContact(Block rect) {
 		return 	(myBall.getCenterY() >= rect.getY()
 				&& myBall.getCenterY() <= rect.getY() + rect.getHeight());
+	}
+	
+	//removes a powerup from the powerups arraylist
+	private void removePow(Powerup p) {
+		root.getChildren().remove(p);
+		powerups.remove(p);
+	}
+	
+	//sets the ball on top of the paddle
+	private void resetBall() {
+		myBall.setCenterX(myPaddle.getX() + myPaddle.getWidth()/2);
+		myBall.setCenterY(myPaddle.getY() - myBall.getRadius());
 	}
 	
 	public static void main (String[] args) {

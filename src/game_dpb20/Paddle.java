@@ -33,4 +33,17 @@ public class Paddle extends Rectangle{
 	public int getLives() {
 		return lives;
 	}
+	
+	public void powered(Powerup p) {
+		switch(p.getPow()) {
+			case "HEART":
+				this.gainLife();
+			case "EXPAND":
+				//expand the paddle width temp
+			case "DOUBLE":
+				//double score temp
+			default:
+		}
+			
+	}
 }
