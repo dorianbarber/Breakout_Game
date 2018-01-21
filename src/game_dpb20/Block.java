@@ -11,13 +11,15 @@ public class Block extends Rectangle{
 	private int hitNumber;
 	private boolean isBroke;
 	private boolean isPermanent = false;
+	private boolean hasPowerup = false;
+	private Powerup pow;
 	
 	
 	public Block(int numb) {
 		super(width, height);
 		hitNumber = numb;
 		isBroke = false;
-		this.mayBePermanent();
+		this.typeOfBlock();
 		this.setFill(getColor());
 		this.setStroke(borderColor);
 	}
@@ -70,11 +72,15 @@ public class Block extends Rectangle{
 	}
 	
 	//uses a random functon to decide whether the block is permanent
-	public void mayBePermanent() {
+	// 20% chance it will be permanent
+	public void typeOfBlock() {
 		int rand = (int)(Math.random()*10);
-		if(rand == 1) {
+		if(rand == 1 || rand == 2) {
 			isPermanent = true;
 			hitNumber = -1;
+		}
+		else if(rand >= 3 && rand <= 5) {
+			hasPowerup = true;
 		}
 	}
 }
