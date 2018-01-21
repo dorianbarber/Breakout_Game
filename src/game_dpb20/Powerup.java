@@ -4,8 +4,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 public class Powerup extends Circle{
-	private static final int myRadius = 5;
+	private static final int myRadius = 6;
 	private static final int yvel = 60;
+
 	
 	private Color myPowerup;
 	
@@ -13,11 +14,11 @@ public class Powerup extends Circle{
 		super(myRadius);
 		//Gives a heart
 		if(numb == 1) {
-			myPowerup = Color.PINK;
+			myPowerup = Color.CRIMSON;
 		}
 		//Expands the paddle temporarily
 		else if(numb == 2) {
-			myPowerup = Color.CRIMSON;
+			myPowerup = Color.DARKBLUE;
 		}
 		//Gives a powerball
 		else if(numb == 3) {
@@ -28,5 +29,10 @@ public class Powerup extends Circle{
 	
 	public int getVel() {
 		return yvel;
+	}
+	
+	//powerup disappears when it comes in contact with the paddle
+	public void absorbed() {
+		this.setFill(Color.BURLYWOOD);
 	}
 }

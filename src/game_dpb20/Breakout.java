@@ -15,11 +15,13 @@ import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 
 public class Breakout extends Application{
+	public static final String TITLE = "Breakout Game - dpb20";
 	public static final int FRAMES_PER_SECOND = 60;
 	public static final int MILLISECOND_DELAY = 1000 / FRAMES_PER_SECOND;
 	public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
@@ -43,7 +45,7 @@ public class Breakout extends Application{
 	private ArrayList<Powerup> powerups;
 	
 	private int score;
-	private Canvas canvas = new Canvas(500,200);
+	private Canvas canvas = new Canvas(500,500);
 	private GraphicsContext gc = canvas.getGraphicsContext2D();
 	private int streak;
 	
@@ -53,7 +55,7 @@ public class Breakout extends Application{
 		
 		//sets up scenes and font for GraphicsContext
 		sceneSetUp();
-		gc.setFont(new Font(20));
+		
 		
 		//sets up game loop
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(SECOND_DELAY));
@@ -71,6 +73,8 @@ public class Breakout extends Application{
 		gameBlocks = new ArrayList<>();
 		gameBlocks.clear();
 		
+		powerups = new ArrayList<>();
+		powerups.clear();
 		
 		myPaddle = new Paddle();
 		myPaddle.setX(paddleX - myPaddle.getWidth()/2);
@@ -83,6 +87,14 @@ public class Breakout extends Application{
 		
 		//Canvas for scoreboard
 		root.getChildren().add(canvas);
+		gc.setTextAlign(TextAlignment.CENTER);
+		gc.setFill(BACKGROUND);
+		gc.fillRect(0, 0, 500, 500);
+		gc.setFill(Color.BLACK);
+		gc.setFont(new Font(20));
+		gc.fillText("Level: " +level, SIZE/2, SIZE - gc.getFont().getSize());
+		gc.setTextAlign(TextAlignment.LEFT);
+		
 		
 		//sets up the blocks
 		for(int row = 1; row <= levelNumb; row++) {
@@ -161,17 +173,26 @@ public class Breakout extends Application{
 				}
 				if(b.isPowed()) {
 					Powerup faller = b.getPowerup();
+					faller.setCenterX(b.getX() + b.getWidth()/2);
+					faller.setCenterY(b.getY() + b.getHeight()/2);
 					root.getChildren().add(faller);
 					powerups.add(faller);
 				}
 			}
 		}
-		
-		for(Powerup p : powerups) {
-			p.setCenterY(p.getCenterY() + p.getVel()*elapsedTime);
-			Shape powAndBall = Shape.intersect(myPaddle, p);
-			if(powAndBall.getBoundsInLocal().getWidth() != -1) {
-				powerups.remove(p);
+		if(!powerups.isEmpty()) {
+			for(Powerup p : powerups) {
+				p.setCenterY(p.getCenterY() + p.getVel()*elapsedTime);
+				Shape powAndBall = Shape.intersect(myPaddle, p);
+				//if it makes contact with the paddle or goes off the screen
+				if(powAndBall.getBoundsInLocal().getWidth() != -1 
+						|| p.getCenterY() >= SIZE) {
+					root.getChildren().remove(p);
+					powerups.remove(p);
+					if(powerups.isEmpty()) {
+						break;
+					}
+				}
 			}
 		}
 		
@@ -238,6 +259,7 @@ public class Breakout extends Application{
 		gameStart = false;
 		myScene = setupGame(SIZE, SIZE, BACKGROUND, level);
 		st.setScene(myScene);
+		st.setTitle(TITLE);
 		st.show();
 		streak = 0;
 	}

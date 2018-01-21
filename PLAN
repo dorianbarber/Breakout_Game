@@ -23,9 +23,9 @@ that will not break upon the ball hitting it for any number of times.
 
 There are several powerups that will be included. One powerup will be temporarily giving
 a x2 score bonus. Another powerup will be to temporarily expand the size of the paddle. 
-Another powerup will be to give the ball double damage. While the ball has double damage
-powerup it will deal two hits to a block instead of one. Finally there will be a powerup
-that will give an extra life to the player if retrieved. 
+Another powerup will be to give the ball double the score. The bonus is applied after the 
+streak gets factored in.Finally there will be a powerup that will give an extra life to 
+the player if retrieved. 
 ***more powerups may be added during the implementation and will be added below
 
 
