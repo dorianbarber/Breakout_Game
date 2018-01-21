@@ -105,9 +105,9 @@ public class Breakout extends Application{
 	private void step (double elapsedTime) {
 		//updates the score by filling over the previous scoreboard
 		gc.setFill(BACKGROUND);
-		gc.fillRect(0, 0, 200, 200);
+		gc.fillRect(0, 0, 300, 200);
 		gc.setFill(Color.BLACK);
-		gc.fillText("Score: " + score, 10, 30);
+		gc.fillText("Score: " + score + "    Streak: " + streak, 10, 30);
 		
 		//checks to see if the player has started the game
 		//which prompts the ball to start moving
@@ -143,7 +143,7 @@ public class Breakout extends Application{
 			if(blockAndBall.getBoundsInLocal().getWidth() != -1 && !b.checkBroke()) {
 				b.hit();
 				//increases the streak count when the ball hits a block
-				streak += 1;
+				
 				//double ballX = blockAndBall.getLayoutX();
 				if(makesSideContact(b)) {
 					myBall.bounceX();
@@ -154,7 +154,10 @@ public class Breakout extends Application{
 				if(b.checkBroke()) {
 					b.deadBlock();
 				}
-				score += streak;
+				if(!b.isPerm()) {
+					streak += 1;
+					score += streak;
+				}
 			}
 			
 		}
@@ -203,22 +206,16 @@ public class Breakout extends Application{
 		else if(code == KeyCode.R) {
 			sceneSetUp();
 		}
-		//these change the level
+		//these change the level to the corresponding digit
 		else if(code == KeyCode.DIGIT1) {
-			//resets the streak count
-			streak = 0;
 			level = 1;
 			sceneSetUp();
 		}
 		else if(code == KeyCode.DIGIT2) {
-			//resets the streak count
-			streak = 0;
 			level = 2;
 			sceneSetUp();
 		}
 		else if(code == KeyCode.DIGIT3) {
-			//resets the streak count
-			streak = 0;
 			level = 3;
 			sceneSetUp();
 		}
@@ -229,6 +226,7 @@ public class Breakout extends Application{
 		myScene = setupGame(SIZE, SIZE, BACKGROUND, level);
 		st.setScene(myScene);
 		st.show();
+		streak = 0;
 	}
 	
 	//Checks to see if the ball made contact with the sides of the Block

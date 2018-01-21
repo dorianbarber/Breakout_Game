@@ -10,12 +10,14 @@ public class Block extends Rectangle{
 	
 	private int hitNumber;
 	private boolean isBroke;
+	private boolean isPermanent = false;
 	
 	
 	public Block(int numb) {
 		super(width, height);
 		hitNumber = numb;
 		isBroke = false;
+		this.mayBePermanent();
 		this.setFill(getColor());
 		this.setStroke(borderColor);
 	}
@@ -45,11 +47,14 @@ public class Block extends Rectangle{
 		else if(hitNumber == 3) {
 			return Color.DARKMAGENTA;
 		}
+		else if(hitNumber <= -1) {
+			return Color.BLACK;
+		}
 		return null;
 	}
 	
 	public boolean checkBroke() {
-		if(hitNumber <= 0) {
+		if(hitNumber == 0) {
 			isBroke = true;
 		}
 		return isBroke;
@@ -58,5 +63,18 @@ public class Block extends Rectangle{
 	public void deadBlock() {
 		this.setFill(Color.BURLYWOOD);
 		this.setStroke(Color.BURLYWOOD);
+	}
+	
+	public boolean isPerm() {
+		return isPermanent;
+	}
+	
+	//uses a random functon to decide whether the block is permanent
+	public void mayBePermanent() {
+		int rand = (int)(Math.random()*10);
+		if(rand == 1) {
+			isPermanent = true;
+			hitNumber = -1;
+		}
 	}
 }
