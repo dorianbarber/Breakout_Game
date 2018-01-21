@@ -108,14 +108,19 @@ public class Breakout extends Application{
 		Shape intersect = Shape.intersect(myPaddle, myBall);
 		if(intersect.getBoundsInLocal().getWidth() != -1) {
 			myBall.bounceY();
+			//checks if the ball hits the side of the paddle
+			if(myBall.getCenterY() >= myPaddle.getY()
+					&& myBall.getCenterY() <= myPaddle.getY()+myPaddle.getHeight()) {
+				myBall.bounceX();
+			}
 		}
 		
 		for(Block b: gameBlocks) {
 			Shape blockAndBall = Shape.intersect(myBall, b);
 			if(blockAndBall.getBoundsInLocal().getWidth() != -1 && !b.checkBroke()) {
 				b.hit();
-				double ballX = blockAndBall.getLayoutX();
-				if(ballX == b.getX() || ballX == b.getX()+Block.getBlockWidth()) {
+				//double ballX = blockAndBall.getLayoutX();
+				if(makesSideContact(b)) {
 					myBall.bounceX();
 				}
 				else {
@@ -133,7 +138,9 @@ public class Breakout extends Application{
 		//the additional boolean checks for if the paddle is about to go off the screen
 		if(code == KeyCode.RIGHT
 				&& myPaddle.getX() + myPaddle.getWidth() <= SIZE) {
+			
 			myPaddle.setX(myPaddle.getX() + myPaddle.getSpeed());
+			
 			//the ball moves with the paddle if the game has not started
 			if(!gameStart) {
 				myBall.setCenterX(myBall.getCenterX() + myPaddle.getSpeed());
@@ -141,7 +148,9 @@ public class Breakout extends Application{
 		}
 		else if(code == KeyCode.LEFT 
 				&& myPaddle.getX() >= 0) {
+			
 			myPaddle.setX(myPaddle.getX() - myPaddle.getSpeed());
+			
 			//the ball moves with the paddle if the game has not started
 			if(!gameStart) {
 				myBall.setCenterX(myBall.getCenterX() - myPaddle.getSpeed());
@@ -162,9 +171,11 @@ public class Breakout extends Application{
 			}
 			
 		}
+		//resets the level
 		else if(code == KeyCode.R) {
 			sceneSetUp();
 		}
+		//these change the level
 		else if(code == KeyCode.DIGIT1) {
 			level = 1;
 			sceneSetUp();
@@ -184,6 +195,12 @@ public class Breakout extends Application{
 		myScene = setupGame(SIZE, SIZE, BACKGROUND, level);
 		st.setScene(myScene);
 		st.show();
+	}
+	
+	//Checks to see if the ball made contact with the sides of the Block
+	public boolean makesSideContact(Block rect) {
+		return 	(myBall.getCenterY() >= rect.getY()
+				&& myBall.getCenterY() <= rect.getY() + rect.getHeight());
 	}
 	
 	public static void main (String[] args) {
