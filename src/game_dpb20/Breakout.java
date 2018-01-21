@@ -40,6 +40,7 @@ public class Breakout extends Application{
 	private boolean gameStart;
 	//keeps track of the blocks in the game
 	private ArrayList<Block> gameBlocks;
+	private ArrayList<Powerup> powerups;
 	
 	private int score;
 	private Canvas canvas = new Canvas(500,200);
@@ -158,8 +159,20 @@ public class Breakout extends Application{
 					streak += 1;
 					score += streak;
 				}
+				if(b.isPowed()) {
+					Powerup faller = b.getPowerup();
+					root.getChildren().add(faller);
+					powerups.add(faller);
+				}
 			}
-			
+		}
+		
+		for(Powerup p : powerups) {
+			p.setCenterY(p.getCenterY() + p.getVel()*elapsedTime);
+			Shape powAndBall = Shape.intersect(myPaddle, p);
+			if(powAndBall.getBoundsInLocal().getWidth() != -1) {
+				powerups.remove(p);
+			}
 		}
 		
 	}

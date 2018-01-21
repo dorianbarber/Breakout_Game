@@ -32,14 +32,9 @@ public class Block extends Rectangle{
 	public static int getBlockWidth() {
 		return width;
 	}
-	public void hit() {
-		hitNumber -= 1;
-		this.setFill(getColor());
-	}
-	
 	
 	//Color of the block is dependent on the number of hits
-	public Color getColor() {
+	private Color getColor() {
 		if(hitNumber == 1) {
 			return Color.AQUA;
 		}
@@ -53,6 +48,11 @@ public class Block extends Rectangle{
 			return Color.BLACK;
 		}
 		return null;
+	}
+	
+	public void hit() {
+		hitNumber -= 1;
+		this.setFill(getColor());
 	}
 	
 	public boolean checkBroke() {
@@ -71,16 +71,27 @@ public class Block extends Rectangle{
 		return isPermanent;
 	}
 	
+	public boolean isPowed() {
+		return hasPowerup && isBroke;
+	}
+	
+	public Powerup getPowerup() {
+		return pow;
+	}
+	
 	//uses a random functon to decide whether the block is permanent
 	// 20% chance it will be permanent
-	public void typeOfBlock() {
+	// 30% chance it will have a powerup
+	// 50% chance it will be normal
+	private void typeOfBlock() {
 		int rand = (int)(Math.random()*10);
-		if(rand == 1 || rand == 2) {
+		if(rand == 4 || rand == 5) {
 			isPermanent = true;
 			hitNumber = -1;
 		}
-		else if(rand >= 3 && rand <= 5) {
+		else if(rand >= 1 && rand <= 3) {
 			hasPowerup = true;
+			pow = new Powerup(rand);
 		}
 	}
 }
