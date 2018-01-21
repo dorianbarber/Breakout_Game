@@ -41,9 +41,7 @@ public class Breakout extends Application{
 	public void start(Stage stage) {
 		st = stage;
 		//sets up scene
-		myScene = setupGame(SIZE, SIZE, BACKGROUND, level);
-		st.setScene(myScene);
-		st.show();
+		sceneSetUp();
 		
 		//sets up game loop
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(SECOND_DELAY));
@@ -72,7 +70,7 @@ public class Breakout extends Application{
 		
 		//sets up the blocks
 		for(int row = 1; row <= levelNumb; row++) {
-			int ypos = SIZE / 2 - row*Block.getBlockHeight();
+			int ypos = SIZE / 2 - (row + 1)*Block.getBlockHeight();
 			for(int xpos = 0; xpos < SIZE; xpos += Block.getBlockWidth()) {
 				Block b = new Block(row);
 				b.setX(xpos);
@@ -145,11 +143,27 @@ public class Breakout extends Application{
 			gameStart = true;
 		}
 		else if(code == KeyCode.R) {
-			gameStart = false;
-			myScene = setupGame(SIZE, SIZE, BACKGROUND, level);
-			st.setScene(myScene);
-			st.show();
+			sceneSetUp();
 		}
+		else if(code == KeyCode.DIGIT1) {
+			level = 1;
+			sceneSetUp();
+		}
+		else if(code == KeyCode.DIGIT2) {
+			level = 2;
+			sceneSetUp();
+		}
+		else if(code == KeyCode.DIGIT3) {
+			level = 3;
+			sceneSetUp();
+		}
+	}
+	
+	public void sceneSetUp() {
+		gameStart = false;
+		myScene = setupGame(SIZE, SIZE, BACKGROUND, level);
+		st.setScene(myScene);
+		st.show();
 	}
 	
 	public static void main (String[] args) {
