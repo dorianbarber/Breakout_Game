@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
@@ -25,6 +26,7 @@ public class Breakout extends Application{
 	public static final int paddleX = SIZE/2;
 	public static final int paddleY = SIZE - 50;
 	
+	private Stage st;
 	private Scene myScene;
 	private Paddle myPaddle;
 	private Bouncer myBall;
@@ -37,10 +39,11 @@ public class Breakout extends Application{
 	
 	
 	public void start(Stage stage) {
+		st = stage;
 		//sets up scene
 		myScene = setupGame(SIZE, SIZE, BACKGROUND, level);
-		stage.setScene(myScene);
-		stage.show();
+		st.setScene(myScene);
+		st.show();
 		
 		//sets up game loop
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(SECOND_DELAY));
@@ -54,6 +57,7 @@ public class Breakout extends Application{
 	private Scene setupGame(int width, int height, Paint background, int levelNumb) {
 		Group root = new Group();
 		Scene scene = new Scene(root, width, height, background);
+		
 		gameBlocks = new ArrayList<>();
 		gameBlocks.clear();
 		
@@ -139,6 +143,12 @@ public class Breakout extends Application{
 		//checks to see if the player has started the game
 		else if(code == KeyCode.UP) {
 			gameStart = true;
+		}
+		else if(code == KeyCode.R) {
+			gameStart = false;
+			myScene = setupGame(SIZE, SIZE, BACKGROUND, level);
+			st.setScene(myScene);
+			st.show();
 		}
 	}
 	
