@@ -59,19 +59,21 @@ public class Breakout extends Application{
 		gameBlocks = new ArrayList<>();
 		gameBlocks.clear();
 		
-		myBall = new Bouncer();
-		myBall.setCenterX(paddleX);
-		myBall.setCenterY(paddleY - myBall.getRadius());
-		
 		
 		myPaddle = new Paddle();
 		myPaddle.setX(paddleX - myPaddle.getWidth()/2);
 		myPaddle.setY(paddleY);
 		
+		
+		myBall = new Bouncer();
+		myBall.setCenterX(myPaddle.getX() + myPaddle.getWidth()/2);
+		myBall.setCenterY(myPaddle.getY() - myBall.getRadius());
+		
+		
 		//sets up the blocks
 		for(int row = 1; row <= levelNumb; row++) {
-			int ypos = SIZE / 2 - (row + 1)*Block.getBlockHeight();
-			for(int xpos = 0; xpos < SIZE; xpos += Block.getBlockWidth()) {
+			int ypos = SIZE / 2 - row*2*Block.getBlockHeight();
+			for(int xpos = 0; xpos < SIZE; xpos += 2*Block.getBlockWidth()) {
 				Block b = new Block(row);
 				b.setX(xpos);
 				b.setY(ypos);
@@ -132,15 +134,33 @@ public class Breakout extends Application{
 		if(code == KeyCode.RIGHT
 				&& myPaddle.getX() + myPaddle.getWidth() <= SIZE) {
 			myPaddle.setX(myPaddle.getX() + myPaddle.getSpeed());
+			//the ball moves with the paddle if the game has not started
+			if(!gameStart) {
+				myBall.setCenterX(myBall.getCenterX() + myPaddle.getSpeed());
+			}
 		}
 		else if(code == KeyCode.LEFT 
 				&& myPaddle.getX() >= 0) {
 			myPaddle.setX(myPaddle.getX() - myPaddle.getSpeed());
+			//the ball moves with the paddle if the game has not started
+			if(!gameStart) {
+				myBall.setCenterX(myBall.getCenterX() - myPaddle.getSpeed());
+			}
 			
 		}
 		//checks to see if the player has started the game
 		else if(code == KeyCode.UP) {
-			gameStart = true;
+			//checks if the ball is off the screen and then resets the ball if it is
+			//starts the ball motion if it is not
+			if(myBall.getCenterY() >= SIZE) {
+				gameStart = false;
+				myBall.setCenterX(myPaddle.getX() + myPaddle.getWidth()/2);
+				myBall.setCenterY(myPaddle.getY() - myBall.getRadius());
+			}
+			else {
+				gameStart = true;
+			}
+			
 		}
 		else if(code == KeyCode.R) {
 			sceneSetUp();
