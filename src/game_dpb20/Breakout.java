@@ -6,11 +6,15 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -28,20 +32,27 @@ public class Breakout extends Application{
 	
 	private Stage st;
 	private Scene myScene;
+	private Group root;
+	
 	private Paddle myPaddle;
 	private Bouncer myBall;
 	private int level = 1;
 	private boolean gameStart;
-	
 	//keeps track of the blocks in the game
 	private ArrayList<Block> gameBlocks;
 	
-	
+	private int score;
+	private Canvas canvas = new Canvas(500,200);
+	private GraphicsContext gc = canvas.getGraphicsContext2D();
+	private int streak;
 	
 	public void start(Stage stage) {
 		st = stage;
-		//sets up scene
+		score = 0;
+		
+		//sets up scenes and font for GraphicsContext
 		sceneSetUp();
+		gc.setFont(new Font(20));
 		
 		//sets up game loop
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(SECOND_DELAY));
@@ -53,7 +64,7 @@ public class Breakout extends Application{
 	}
 	
 	private Scene setupGame(int width, int height, Paint background, int levelNumb) {
-		Group root = new Group();
+		root = new Group();
 		Scene scene = new Scene(root, width, height, background);
 		
 		gameBlocks = new ArrayList<>();
@@ -69,6 +80,8 @@ public class Breakout extends Application{
 		myBall.setCenterX(myPaddle.getX() + myPaddle.getWidth()/2);
 		myBall.setCenterY(myPaddle.getY() - myBall.getRadius());
 		
+		//Canvas for scoreboard
+		root.getChildren().add(canvas);
 		
 		//sets up the blocks
 		for(int row = 1; row <= levelNumb; row++) {
@@ -90,6 +103,12 @@ public class Breakout extends Application{
 	}
 	
 	private void step (double elapsedTime) {
+		//updates the score by filling over the previous scoreboard
+		gc.setFill(BACKGROUND);
+		gc.fillRect(0, 0, 200, 200);
+		gc.setFill(Color.BLACK);
+		gc.fillText("Score: " + score, 10, 30);
+		
 		//checks to see if the player has started the game
 		//which prompts the ball to start moving
 		if(gameStart) {
@@ -107,18 +126,24 @@ public class Breakout extends Application{
 		//checks to see if the ball intersects the paddle
 		Shape intersect = Shape.intersect(myPaddle, myBall);
 		if(intersect.getBoundsInLocal().getWidth() != -1) {
-			myBall.bounceY();
+			//resets the streak count
+			streak = 0;
 			//checks if the ball hits the side of the paddle
+			myBall.bounceY();
 			if(myBall.getCenterY() >= myPaddle.getY()
 					&& myBall.getCenterY() <= myPaddle.getY()+myPaddle.getHeight()) {
 				myBall.bounceX();
 			}
 		}
 		
+		//checks if the ball makes contact with any of the blocks
+		//must loop through all the blocks
 		for(Block b: gameBlocks) {
 			Shape blockAndBall = Shape.intersect(myBall, b);
 			if(blockAndBall.getBoundsInLocal().getWidth() != -1 && !b.checkBroke()) {
 				b.hit();
+				//increases the streak count when the ball hits a block
+				streak += 1;
 				//double ballX = blockAndBall.getLayoutX();
 				if(makesSideContact(b)) {
 					myBall.bounceX();
@@ -126,10 +151,12 @@ public class Breakout extends Application{
 				else {
 					myBall.bounceY();
 				}
+				if(b.checkBroke()) {
+					b.deadBlock();
+				}
+				score += streak;
 			}
-			if(b.checkBroke()) {
-				b.deadBlock();
-			}
+			
 		}
 		
 	}
@@ -169,7 +196,8 @@ public class Breakout extends Application{
 			else {
 				gameStart = true;
 			}
-			
+			//resets the streak count
+			streak = 0;
 		}
 		//resets the level
 		else if(code == KeyCode.R) {
@@ -177,14 +205,20 @@ public class Breakout extends Application{
 		}
 		//these change the level
 		else if(code == KeyCode.DIGIT1) {
+			//resets the streak count
+			streak = 0;
 			level = 1;
 			sceneSetUp();
 		}
 		else if(code == KeyCode.DIGIT2) {
+			//resets the streak count
+			streak = 0;
 			level = 2;
 			sceneSetUp();
 		}
 		else if(code == KeyCode.DIGIT3) {
+			//resets the streak count
+			streak = 0;
 			level = 3;
 			sceneSetUp();
 		}
