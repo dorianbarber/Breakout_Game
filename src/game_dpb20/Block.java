@@ -2,11 +2,13 @@ package game_dpb20;
 
 import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 
 public class Block extends Rectangle{
 	private static final int width = 50;
 	private static final int height = 30;
 	private static Color borderColor = Color.BLACK;
+	private static Paint backGround;
 	
 	private int hitNumber;
 	private boolean isBroke;
@@ -15,13 +17,14 @@ public class Block extends Rectangle{
 	private Powerup pow;
 	
 	
-	public Block(int numb) {
+	public Block(int numb, Paint back) {
 		super(width, height);
 		hitNumber = numb;
 		isBroke = false;
 		this.typeOfBlock();
 		this.setFill(getColor());
 		this.setStroke(borderColor);
+		backGround = back;
 	}
 	
 	
@@ -63,8 +66,8 @@ public class Block extends Rectangle{
 	}
 	
 	public void deadBlock() {
-		this.setFill(Color.BURLYWOOD);
-		this.setStroke(Color.BURLYWOOD);
+		this.setFill(backGround);
+		this.setStroke(backGround);
 	}
 	
 	public boolean isPerm() {

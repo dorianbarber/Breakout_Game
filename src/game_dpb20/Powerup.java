@@ -31,8 +31,4 @@ public class Powerup extends Circle{
 		return yvel;
 	}
 	
-	//powerup disappears when it comes in contact with the paddle
-	public void absorbed() {
-		this.setFill(Color.BURLYWOOD);
-	}
 }

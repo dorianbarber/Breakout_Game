@@ -87,6 +87,7 @@ public class Breakout extends Application{
 		
 		//Canvas for scoreboard
 		root.getChildren().add(canvas);
+		//Sets the level number on the bottom
 		gc.setTextAlign(TextAlignment.CENTER);
 		gc.setFill(BACKGROUND);
 		gc.fillRect(0, 0, 500, 500);
@@ -100,7 +101,7 @@ public class Breakout extends Application{
 		for(int row = 1; row <= levelNumb; row++) {
 			int ypos = SIZE / 2 - row*2*Block.getBlockHeight();
 			for(int xpos = 0; xpos < SIZE; xpos += 2*Block.getBlockWidth()) {
-				Block b = new Block(row);
+				Block b = new Block(row, BACKGROUND);
 				b.setX(xpos);
 				b.setY(ypos);
 				gameBlocks.add(b);
