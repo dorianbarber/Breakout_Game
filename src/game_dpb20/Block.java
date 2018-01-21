@@ -42,7 +42,7 @@ public class Block extends Rectangle{
 	}
 	
 	public void deadBlock() {
-		blockColor = Color.BURLYWOOD;
-		borderColor = Color.BURLYWOOD;
+		this.setFill(Color.BURLYWOOD);
+		this.setStroke(Color.BURLYWOOD);
 	}
 }

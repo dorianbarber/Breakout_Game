@@ -108,7 +108,7 @@ public class Breakout extends Application{
 		
 		for(Block b: gameBlocks) {
 			Shape blockAndBall = Shape.intersect(myBall, b);
-			if(blockAndBall.getBoundsInLocal().getWidth() != -1) {
+			if(blockAndBall.getBoundsInLocal().getWidth() != -1 && !b.checkBroke()) {
 				b.hit();
 				double ballX = blockAndBall.getLayoutX();
 				if(ballX == b.getX() || ballX == b.getX()+Block.getBlockWidth()) {
@@ -134,6 +134,7 @@ public class Breakout extends Application{
 		else if(code == KeyCode.LEFT 
 				&& myPaddle.getX() >= 0) {
 			myPaddle.setX(myPaddle.getX() - myPaddle.getSpeed());
+			
 		}
 		//checks to see if the player has started the game
 		else if(code == KeyCode.UP) {
