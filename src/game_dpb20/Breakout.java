@@ -38,6 +38,7 @@ public class Breakout extends Application{
 	
 	private Paddle myPaddle;
 	private Bouncer myBall;
+	private Bouncer myTarget;
 	private int level = 1;
 	private int streak;
 	private boolean gameStart;
@@ -84,6 +85,10 @@ public class Breakout extends Application{
 		myBall = new Bouncer();
 		resetBall();
 		
+		myTarget = new Bouncer();
+		myTarget.setCenterX(SIZE/2);
+		myTarget.setCenterY(SIZE/6);
+		myTarget.changeToTarget();
 		//Canvas for scoreboard
 		root.getChildren().add(canvas);
 		//Sets the level number on the bottom
@@ -109,6 +114,7 @@ public class Breakout extends Application{
 		
 		root.getChildren().add(myBall);
 		root.getChildren().add(myPaddle);
+		root.getChildren().add(myTarget);
 		
 		scene.setOnKeyPressed(e -> handleKeyInput(e.getCode()));
 		return scene;
@@ -203,6 +209,13 @@ public class Breakout extends Application{
 			}
 		}
 		
+		//checks to see if the bouncer connected with the target
+		// to let the user move on to the next level
+		Shape targetAndBall = Shape.intersect(myTarget, myBall);
+		if(targetAndBall.getBoundsInLocal().getWidth() != -1) {
+			level += 1;
+			sceneSetUp();
+		}
 	}
 	
 	private void handleKeyInput(KeyCode code) {

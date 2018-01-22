@@ -50,7 +50,7 @@ public class Block extends Rectangle{
 		else if(hitNumber <= -1) {
 			return Color.BLACK;
 		}
-		return null;
+		return Color.DARKSALMON;
 	}
 	
 	public void hit() {

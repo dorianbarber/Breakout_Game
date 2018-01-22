@@ -47,4 +47,14 @@ public class Bouncer extends Circle{
 				&& (this.getCenterX() + myRadius) <= border); 
 	}
 	
+	
+	//additional adjustments specifically for the myTarget instance
+	// not to be used for the myBall instance
+	public void changeToTarget() {
+		yvel = 0;
+		this.setStroke(Color.WHITE);
+		this.setFill(Color.RED);
+		this.setRadius(myRadius*2);
+	}
+	
 }
