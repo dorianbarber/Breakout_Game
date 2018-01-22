@@ -39,11 +39,14 @@ public class Breakout extends Application{
 	private Paddle myPaddle;
 	private Bouncer myBall;
 	private Bouncer myTarget;
+	
 	private int level;
 	private int streak;
 	private int longestStreak = 0;
+	
 	private boolean gameStart;
 	private boolean loadScreen = true;
+	private boolean unlimitedLives = false;
 	
 	//keeps track of the blocks in the game
 	private ArrayList<Block> gameBlocks;
@@ -126,7 +129,9 @@ public class Breakout extends Application{
 		//updates the score by filling over the previous scoreboard
 		if(myBall.getCenterY() >= SIZE && myPaddle.getLives() > 0) {
 			resetBall(); 
-			myPaddle.loseLife();
+			if(!unlimitedLives) {
+				myPaddle.loseLife();
+			}
 			gameStart = false;
 		}
 		
@@ -302,6 +307,14 @@ public class Breakout extends Application{
 		else if(code == KeyCode.DIGIT3) {
 			level = 3;
 			sceneSetUp();
+		}
+		else if(code == KeyCode.U) {
+			if(unlimitedLives) {
+				unlimitedLives = false;
+			}
+			else {
+				unlimitedLives = true;
+			}
 		}
 	}
 	

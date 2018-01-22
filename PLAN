@@ -32,9 +32,10 @@ the player if retrieved.
 
 Some cheat codes that will be included will be as follows:
 R --> reset the level
-C --> automatically clear the level
-U --> (toggle) unlimited lives
-B --> go back to a previous level
+1 --> go to level 1
+2 --> go to level 2
+3 --> go to level 3
+U --> toggle unlimited lives
 ***more may be added during implementation and will be added below
 
 
