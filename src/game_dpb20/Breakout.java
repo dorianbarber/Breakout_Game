@@ -9,10 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
@@ -335,9 +333,7 @@ public class Breakout extends Application{
 	}
 	
 	public void splashScreen() {
-		Text t = new Text();
-		t.setFont(new Font(17));
-		t.setText("Welcome to Breakout!\n"
+		String message = ("Welcome to Breakout!\n"
 				+ "Use the right and left arrow keys to move the paddle.\n"
 				+ "Press the up arrow to release the ball.\n"
 				+ "\n"
@@ -351,60 +347,27 @@ public class Breakout extends Application{
 				+ "Green--> temporarily gives double score\n"
 				+ "\n"
 				+ "When you're ready press the\nspace bar to start the game!");
-		t.setX(50);
-		t.setY(50);
-		root = new Group(t);
-		Scene scene = new Scene(root, SIZE, SIZE, BACKGROUND);
-		
-		st.setScene(scene);
-		st.setTitle(TITLE);
-		st.show();
-		
-		scene.setOnKeyPressed(e -> handleSplashScreenInput(e.getCode()));
+		changeToMessageScreen(message);
 	}
 	
 	public void endScreen() {
-		root.getChildren().remove(myBall);
-		Text t = new Text();
-		t.setFont(new Font(17));
-		t.setText("Congratulations you have won!!!!\n"
+		String message = ("Congratulations you have won!!!!\n"
 				+ "Your score was: " + score +"\n"
 				+ "Your highest streak: " + longestStreak + "\n"
-						+ "\n"
+				+ "\n"
 				+ "Press the space bar to play again!\n");
-		
-		t.setX(50);
-		t.setY(50);
-		root = new Group(t);
-		Scene scene = new Scene(root, SIZE, SIZE, BACKGROUND);
-		
-		st.setScene(scene);
-		st.setTitle(TITLE);
-		st.show();
-		
-		scene.setOnKeyPressed(e -> handleSplashScreenInput(e.getCode()));
+		root.getChildren().remove(myBall);
+		changeToMessageScreen(message);
 	}
 	
 	public void gameOverScreen() {
-		root.getChildren().remove(myBall);
-		Text t = new Text();
-		t.setFont(new Font(17));
-		t.setText("GAME OVER\n"
+		String message = ("GAME OVER\n"
 				+ "Awww shucks it looks like you've\n"
 				+ "just run out of lives.\n"
 				+ "\n"
 				+ "Press the space bar to play again");
-		
-		t.setX(50);
-		t.setY(50);
-		root = new Group(t);
-		Scene scene = new Scene(root, SIZE, SIZE, BACKGROUND);
-		
-		st.setScene(scene);
-		st.setTitle(TITLE);
-		st.show();
-		
-		scene.setOnKeyPressed(e -> handleSplashScreenInput(e.getCode()));
+		root.getChildren().remove(myBall);
+		changeToMessageScreen(message);
 	}
 	
 	//Checks to see if the ball made contact with the sides of the Block
@@ -467,6 +430,22 @@ public class Breakout extends Application{
 		return false;
 	}
 	
+	private void changeToMessageScreen(String message) {
+		Text t = new Text();
+		t.setFont(new Font(17));
+		t.setText(message);
+		
+		t.setX(50);
+		t.setY(50);
+		root = new Group(t);
+		Scene scene = new Scene(root, SIZE, SIZE, BACKGROUND);
+		
+		st.setScene(scene);
+		st.setTitle(TITLE);
+		st.show();
+		
+		scene.setOnKeyPressed(e -> handleSplashScreenInput(e.getCode()));
+	}
 	
 	public static void main (String[] args) {
 		launch(args);
