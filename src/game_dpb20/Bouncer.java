@@ -33,15 +33,10 @@ public class Bouncer extends Circle{
 	}
 	
 	
-	
-	//checks if the ball has hit the y border (top of the screen)
-	//if so it returns false
 	public boolean checkYBounds() {
 		return (this.getCenterY()-RADIUS) >= 0;
 	}
 	
-	//checks if the ball has hit either the right or left side of the screen
-	//if so returns false
 	public boolean checkXBounds(int border) {
 		return ((this.getCenterX() - RADIUS) >= 0 
 				&& (this.getCenterX() + RADIUS) <= border); 

@@ -10,6 +10,7 @@ public class Powerup extends Circle{
 	private enum options {HEART, EXPAND, DOUBLE};
 	private String thePowerup;
 	private Color powColor;	
+	private boolean used = false;
 	
 	public Powerup(int numb) {
 		super(RADIUS);
@@ -37,5 +38,13 @@ public class Powerup extends Circle{
 	
 	public String getPow() {
 		return thePowerup;
+	}
+	
+	public void powUsed() {
+		used = true;
+	}
+	
+	public boolean isUsed() {
+		return used;
 	}
 }

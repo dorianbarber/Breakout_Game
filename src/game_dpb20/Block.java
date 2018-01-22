@@ -36,7 +36,6 @@ public class Block extends Rectangle{
 		return WIDTH;
 	}
 	
-	//Color of the block is dependent on the number of hits
 	private Color getColor() {
 		if(hitNumber == 1) {
 			return Color.AQUA;
@@ -82,7 +81,7 @@ public class Block extends Rectangle{
 		return pow;
 	}
 	
-	//uses a random functon to decide whether the block is permanent
+	//uses a random functon to decide what kind of block
 	// 20% chance it will be permanent
 	// 30% chance it will have a powerup
 	// 50% chance it will be normal

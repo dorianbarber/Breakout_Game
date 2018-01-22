@@ -178,7 +178,12 @@ public class Breakout extends Application{
 				}
 				if(!b.isPerm()) {
 					streak += 1;
-					score += streak;
+					if(myPaddle.isBonus()) {
+						score += streak + 1;
+					}
+					else {
+						score += streak;
+					}
 				}
 				if(b.isPowed()) {
 					Powerup faller = b.getPowerup();
@@ -191,19 +196,23 @@ public class Breakout extends Application{
 		}
 		if(!powerups.isEmpty()) {
 			for(Powerup p : powerups) {
-				p.setCenterY(p.getCenterY() + Powerup.Y_VELOCITY*elapsedTime);
-				Shape powAndBall = Shape.intersect(myPaddle, p);
-				//if it makes contact with the paddle or goes off the screen
-				if(powAndBall.getBoundsInLocal().getWidth() != -1) {
-					myPaddle.powered(p);
-					removePow(p);
-					if(powerups.isEmpty()) {
-						break;
-					}
-				} else if(p.getCenterY() >= SIZE) {
-					removePow(p);
-					if(powerups.isEmpty()) {
-						break;
+				if(!p.isUsed()) {
+					p.setCenterY(p.getCenterY() + Powerup.Y_VELOCITY*elapsedTime);
+					Shape powAndBall = Shape.intersect(myPaddle, p);
+					//if it makes contact with the paddle or goes off the screen
+					if(powAndBall.getBoundsInLocal().getWidth() != -1) {
+						p.powUsed();
+						myPaddle.powered(p);
+						System.out.println(p.getPow());
+						root.getChildren().remove(p);
+						if(powerups.isEmpty()) {
+							break;
+						}
+					} else if(p.getCenterY() >= SIZE) {
+						root.getChildren().remove(p);
+						if(powerups.isEmpty()) {
+							break;
+						}
 					}
 				}
 			}
@@ -287,12 +296,6 @@ public class Breakout extends Application{
 	private boolean makesSideContact(Block rect) {
 		return 	(myBall.getCenterY() >= rect.getY()
 				&& myBall.getCenterY() <= rect.getY() + rect.getHeight());
-	}
-	
-	//removes a powerup from the powerups arraylist
-	private void removePow(Powerup p) {
-		root.getChildren().remove(p);
-		powerups.remove(p);
 	}
 	
 	//sets the ball on top of the paddle
