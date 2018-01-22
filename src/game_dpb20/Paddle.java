@@ -38,10 +38,14 @@ public class Paddle extends Rectangle{
 		return lives;
 	}
 	
+	public void setLives(int numb) {
+		lives = numb;
+	}
+	
 	public void powered(Powerup p) {
 		switch(p.getPow()) {
-			
 			case "EXPAND":
+				System.out.println("here");
 				//expand the paddle width temporarily
 				Paddle rect = this;
 				rect.setWidth(WIDTH * 1.5);
@@ -52,6 +56,7 @@ public class Paddle extends Rectangle{
 						rect.setWidth(WIDTH);
 					}
 				}, 6*1000);
+				break;
 			case "DOUBLE":
 				//double score temporarily
 				bonusPoints = true;
@@ -62,9 +67,13 @@ public class Paddle extends Rectangle{
 						bonusPoints = false;
 					}
 				}, 6*1000);
+				break;
 			case "HEART":
+				System.out.println("here");
 				this.gainLife();
+				break;
 			default:
+				break;
 		}
 	}
 }

@@ -39,9 +39,11 @@ public class Breakout extends Application{
 	private Paddle myPaddle;
 	private Bouncer myBall;
 	private Bouncer myTarget;
-	private int level = 1;
+	private int level;
 	private int streak;
+	private int longestStreak = 0;
 	private boolean gameStart;
+	private boolean loadScreen = true;
 	
 	//keeps track of the blocks in the game
 	private ArrayList<Block> gameBlocks;
@@ -56,16 +58,26 @@ public class Breakout extends Application{
 	public void start(Stage stage) {
 		st = stage;
 		score = 0;
+		level = 1;
 		
-		//sets up scenes and font for GraphicsContext
-		sceneSetUp();
+		if(loadScreen) {
+			splashScreen();
+		}
+		else {
+			//sets up scenes and font for GraphicsContext
+			myPaddle = new Paddle();
+			myPaddle.setX(paddleX - myPaddle.getWidth()/2);
+			myPaddle.setY(paddleY);
+			sceneSetUp();
+
+			//sets up game loop
+			KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(SECOND_DELAY));
+			Timeline animation = new Timeline(); 
+			animation.setCycleCount(Timeline.INDEFINITE);
+			animation.getKeyFrames().add(frame);
+			animation.play();
+		}
 		
-		//sets up game loop
-		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(SECOND_DELAY));
-		Timeline animation = new Timeline(); 
-		animation.setCycleCount(Timeline.INDEFINITE);
-		animation.getKeyFrames().add(frame);
-		animation.play();
 	}
 	
 	private Scene setupGame(int width, int height, Paint background, int levelNumb) {
@@ -78,9 +90,7 @@ public class Breakout extends Application{
 		powerups = new ArrayList<>();
 		powerups.clear();
 		
-		myPaddle = new Paddle();
-		myPaddle.setX(paddleX - myPaddle.getWidth()/2);
-		myPaddle.setY(paddleY);
+		
 		
 		myBall = new Bouncer();
 		resetBall();
@@ -91,14 +101,6 @@ public class Breakout extends Application{
 		myTarget.changeToTarget();
 		//Canvas for scoreboard
 		root.getChildren().add(canvas);
-		//Sets the level number on the bottom
-		gc.setTextAlign(TextAlignment.CENTER);
-		gc.setFill(BACKGROUND);
-		gc.fillRect(0, 0, 500, 500);
-		gc.setFill(Color.BLACK);
-		gc.setFont(new Font(20));
-		gc.fillText("Level: " +level, SIZE/2, SIZE - gc.getFont().getSize());
-		gc.setTextAlign(TextAlignment.LEFT);
 		
 		//sets up the blocks
 		for(int row = 1; row <= levelNumb; row++) {
@@ -127,11 +129,8 @@ public class Breakout extends Application{
 			myPaddle.loseLife();
 			gameStart = false;
 		}
-		gc.setFill(BACKGROUND);
-		gc.fillRect(0, 0, 300, 200);
-		gc.setFill(Color.BLACK);
-		gc.fillText("Score: " + score + "    Streak: " + streak 
-				+"    Lives: " +myPaddle.getLives(), 10, 30);
+		
+		setText();
 		
 		//checks to see if the player has started the game
 		//which prompts the ball to start moving
@@ -178,8 +177,11 @@ public class Breakout extends Application{
 				}
 				if(!b.isPerm()) {
 					streak += 1;
+					if(streak > longestStreak) {
+						longestStreak = streak;
+					}
 					if(myPaddle.isBonus()) {
-						score += streak + 1;
+						score += streak*2;
 					}
 					else {
 						score += streak;
@@ -194,28 +196,30 @@ public class Breakout extends Application{
 				}
 			}
 		}
-		if(!powerups.isEmpty()) {
-			for(Powerup p : powerups) {
-				if(!p.isUsed()) {
-					p.setCenterY(p.getCenterY() + Powerup.Y_VELOCITY*elapsedTime);
-					Shape powAndBall = Shape.intersect(myPaddle, p);
-					//if it makes contact with the paddle or goes off the screen
-					if(powAndBall.getBoundsInLocal().getWidth() != -1) {
-						p.powUsed();
-						myPaddle.powered(p);
-						System.out.println(p.getPow());
-						root.getChildren().remove(p);
-						if(powerups.isEmpty()) {
-							break;
-						}
-					} else if(p.getCenterY() >= SIZE) {
-						root.getChildren().remove(p);
-						if(powerups.isEmpty()) {
-							break;
-						}
+		for(Powerup p : powerups) {
+			if(!p.isUsed()) {
+				p.setCenterY(p.getCenterY() + Powerup.Y_VELOCITY*elapsedTime);
+				Shape powAndBall = Shape.intersect(myPaddle, p);
+				//if it makes contact with the paddle or goes off the screen
+				if(powAndBall.getBoundsInLocal().getWidth() != -1) {
+					p.powUsed();
+					myPaddle.powered(p);
+					root.getChildren().remove(p);
+					if(powerups.isEmpty()) {
+						break;
+					}
+				} else if(p.getCenterY() >= SIZE) {
+					root.getChildren().remove(p);
+					if(powerups.isEmpty()) {
+						break;
 					}
 				}
 			}
+
+		}
+		
+		if(myPaddle.getLives() == 0) {
+			gameOverScreen();
 		}
 		
 		//checks to see if the bouncer connected with the target
@@ -223,8 +227,14 @@ public class Breakout extends Application{
 		Shape targetAndBall = Shape.intersect(myTarget, myBall);
 		if(targetAndBall.getBoundsInLocal().getWidth() != -1) {
 			level += 1;
-			sceneSetUp();
+			if(level <= 3) {
+				sceneSetUp();
+			}
+			else {
+				endScreen();
+			}
 		}
+		
 	}
 	
 	private void handleKeyInput(KeyCode code) {
@@ -283,6 +293,24 @@ public class Breakout extends Application{
 		}
 	}
 	
+	private void handleSplashScreenInput(KeyCode code) {
+		if(code == KeyCode.SPACE) {
+			if(loadScreen) {
+				loadScreen = false;
+				start(st);
+			}
+			else {
+				level = 1;
+				score = 0;
+				myPaddle.setLives(3);
+				myPaddle.setX(paddleX - myPaddle.getWidth()/2);
+				myPaddle.setY(paddleY);
+				sceneSetUp();
+			}
+			
+		}
+	}
+	
 	public void sceneSetUp() {
 		gameStart = false;
 		myScene = setupGame(SIZE, SIZE, BACKGROUND, level);
@@ -290,6 +318,77 @@ public class Breakout extends Application{
 		st.setTitle(TITLE);
 		st.show();
 		streak = 0;
+	}
+	
+	public void splashScreen() {
+		Text t = new Text();
+		t.setFont(new Font(17));
+		t.setText("Welcome to Breakout!\n"
+				+ "Use the right and left arrow keys to move the paddle.\n"
+				+ "Press the up arrow to release the ball.\n"
+				+ "\n"
+				+ "Break blocks to score points.\n"
+				+ "Create a streak of hits to score bonus points!!!\n"
+				+ "Aim for the target to move onto the next level.\n"
+				+ "\n"
+				+ "Look for special powerups to give you bonuses!\n"
+				+ "Red   --> gives a life\n"
+				+ "Blue  --> temporarily makes the paddle bigger\n"
+				+ "Green--> temporarily gives double score\n"
+				+ "\n"
+				+ "When you're ready press the\nspace bar to start the game!");
+		t.setX(50);
+		t.setY(50);
+		root = new Group(t);
+		Scene scene = new Scene(root, SIZE, SIZE, BACKGROUND);
+		
+		st.setScene(scene);
+		st.setTitle(TITLE);
+		st.show();
+		
+		scene.setOnKeyPressed(e -> handleSplashScreenInput(e.getCode()));
+	}
+	
+	public void endScreen() {
+		Text t = new Text();
+		t.setFont(new Font(17));
+		t.setText("Congratulations you have won!!!!\n"
+				+ "Your score was: " + score +"\n"
+				+ "Your highest streak: " + longestStreak + "\n"
+						+ "\n"
+				+ "Press the space bar to play again!\n");
+		
+		t.setX(50);
+		t.setY(50);
+		root = new Group(t);
+		Scene scene = new Scene(root, SIZE, SIZE, BACKGROUND);
+		
+		st.setScene(scene);
+		st.setTitle(TITLE);
+		st.show();
+		
+		scene.setOnKeyPressed(e -> handleSplashScreenInput(e.getCode()));
+	}
+	
+	public void gameOverScreen() {
+		Text t = new Text();
+		t.setFont(new Font(17));
+		t.setText("GAME OVER\n"
+				+ "Awww shucks it looks like you've\n"
+				+ "just run out of lives.\n"
+				+ "\n"
+				+ "Press the space bar to play again");
+		
+		t.setX(50);
+		t.setY(50);
+		root = new Group(t);
+		Scene scene = new Scene(root, SIZE, SIZE, BACKGROUND);
+		
+		st.setScene(scene);
+		st.setTitle(TITLE);
+		st.show();
+		
+		scene.setOnKeyPressed(e -> handleSplashScreenInput(e.getCode()));
 	}
 	
 	//Checks to see if the ball made contact with the sides of the Block
@@ -303,6 +402,23 @@ public class Breakout extends Application{
 		myBall.setCenterX(myPaddle.getX() + myPaddle.getWidth()/2);
 		myBall.setCenterY(myPaddle.getY() - myBall.getRadius());
 	}
+	
+	//Sets the level number and the score, streak, and lives
+	private void setText() {
+		gc.setTextAlign(TextAlignment.CENTER);
+		gc.setFill(BACKGROUND);
+		gc.fillRect(0, 0, 500, 500);
+		gc.setFill(Color.BLACK);
+		gc.setFont(new Font(20));
+		gc.fillText("Level: " +level, SIZE/2, SIZE - gc.getFont().getSize());
+		gc.setTextAlign(TextAlignment.LEFT);
+		gc.setFill(BACKGROUND);
+		gc.fillRect(0, 0, 300, 200);
+		gc.setFill(Color.BLACK);
+		gc.fillText("Score: " + score + "    Streak: " + streak 
+				+"    Lives: " +myPaddle.getLives(), 10, 30);
+	}
+	
 	
 	public static void main (String[] args) {
 		launch(args);

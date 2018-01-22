@@ -32,10 +32,6 @@ public class Powerup extends Circle{
 		this.setFill(powColor);
 	}
 	
-//	public int getVel() {
-//		return yvel;
-//	}
-	
 	public String getPow() {
 		return thePowerup;
 	}
