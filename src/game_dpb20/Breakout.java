@@ -232,6 +232,8 @@ public class Breakout extends Application{
 		
 		if(myPaddle.getLives() == 0) {
 			gameOverScreen();
+			//to prevent the game from continuously cycling to this spot
+			myPaddle.setLives(-1);
 		}
 		
 		//checks to see if the bouncer connected with the target
@@ -362,6 +364,7 @@ public class Breakout extends Application{
 	}
 	
 	public void endScreen() {
+		root.getChildren().remove(myBall);
 		Text t = new Text();
 		t.setFont(new Font(17));
 		t.setText("Congratulations you have won!!!!\n"
@@ -383,6 +386,7 @@ public class Breakout extends Application{
 	}
 	
 	public void gameOverScreen() {
+		root.getChildren().remove(myBall);
 		Text t = new Text();
 		t.setFont(new Font(17));
 		t.setText("GAME OVER\n"
@@ -405,15 +409,11 @@ public class Breakout extends Application{
 	
 	//Checks to see if the ball made contact with the sides of the Block
 	private boolean makesSideContact(Rectangle rect) {
-		
-		
-//		return 	(myBall.getCenterY() >= rect.getY()
-//				&& myBall.getCenterY() <= rect.getY() + rect.getHeight());
-		
 		double lowerBound = (rect.getY() - myBall.getCenterY());
 		double upperBound = (rect.getY() + myBall.getCenterY());
 		return (myBall.getCenterY() > lowerBound && myBall.getCenterY() < upperBound)
-				&& (myBall.getCenterX() - myBall.getRadius() < rect.getX() || myBall.getCenterX() + myBall.getRadius() > rect.getX() + rect.getWidth());
+				&& (myBall.getCenterX() - myBall.getRadius() < rect.getX() 
+						|| myBall.getCenterX() + myBall.getRadius() > rect.getX() + rect.getWidth());
 	}
 	
 	private boolean topAndBottom(Rectangle rect, Bouncer b) {
