@@ -97,8 +97,8 @@ public class Breakout extends Application{
 		
 		//sets up the blocks
 		for(int row = 1; row <= levelNumb; row++) {
-			int ypos = SIZE / 2 - row*2*Block.getBlockHeight();
-			for(int xpos = 0; xpos < SIZE; xpos += 2*Block.getBlockWidth()) {
+			int ypos = SIZE*5/8 - row*2*Block.getBlockHeight();
+			for(int xpos = Block.getBlockWidth()/2; xpos < SIZE; xpos += 2*Block.getBlockWidth()) {
 				Block b = new Block(row, BACKGROUND);
 				b.setX(xpos);
 				b.setY(ypos);
@@ -117,7 +117,7 @@ public class Breakout extends Application{
 	private void step (double elapsedTime) {
 		//updates the score by filling over the previous scoreboard
 		if(myBall.getCenterY() >= SIZE && myPaddle.getLives() > 0) {
-			resetBall();
+			resetBall(); 
 			myPaddle.loseLife();
 			gameStart = false;
 		}
