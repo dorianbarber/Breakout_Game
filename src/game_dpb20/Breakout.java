@@ -12,6 +12,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -154,24 +156,34 @@ public class Breakout extends Application{
 			streak = 0;
 			//checks if the ball hits the side of the paddle
 			myBall.bounceY();
-			if(myBall.getCenterY() >= myPaddle.getY()
-					&& myBall.getCenterY() <= myPaddle.getY()+myPaddle.getHeight()) {
+			if(cornerTest(myPaddle, myBall)) {
+				System.out.println("paddle corner contact");
+				myBall.bounceX();
+			} else if(makesSideContact(myPaddle)) {
+				System.out.println("paddle side contact");
 				myBall.bounceX();
 			}
 		}
+		
+		
 		
 		//checks if the ball makes contact with any of the blocks
 		//must loop through all the blocks
 		for(Block b: gameBlocks) {
 			Shape blockAndBall = Shape.intersect(myBall, b);
 			if(blockAndBall.getBoundsInLocal().getWidth() != -1 && !b.checkBroke()) {
-				b.hit();
-				if(makesSideContact(b)) {
+				
+				if(sideAndSide(b,myBall)) {
 					myBall.bounceX();
 				}
-				else {
+				else if (topAndBottom(b,myBall)) {
 					myBall.bounceY();
 				}
+				else {
+					myBall.bounceX();
+					myBall.bounceY();
+				}
+				b.hit();
 				if(b.checkBroke()) {
 					b.deadBlock();
 				}
@@ -392,9 +404,24 @@ public class Breakout extends Application{
 	}
 	
 	//Checks to see if the ball made contact with the sides of the Block
-	private boolean makesSideContact(Block rect) {
-		return 	(myBall.getCenterY() >= rect.getY()
-				&& myBall.getCenterY() <= rect.getY() + rect.getHeight());
+	private boolean makesSideContact(Rectangle rect) {
+		
+		
+//		return 	(myBall.getCenterY() >= rect.getY()
+//				&& myBall.getCenterY() <= rect.getY() + rect.getHeight());
+		
+		double lowerBound = (rect.getY() - myBall.getCenterY());
+		double upperBound = (rect.getY() + myBall.getCenterY());
+		return (myBall.getCenterY() > lowerBound && myBall.getCenterY() < upperBound)
+				&& (myBall.getCenterX() - myBall.getRadius() < rect.getX() || myBall.getCenterX() + myBall.getRadius() > rect.getX() + rect.getWidth());
+	}
+	
+	private boolean topAndBottom(Rectangle rect, Bouncer b) {
+		return (b.getCenterX() > rect.getX() && b.getCenterX() < rect.getX() + rect.getWidth());
+	}
+	
+	private boolean sideAndSide(Rectangle rect, Bouncer b) {
+		return (b.getCenterY() > rect.getY() && b.getCenterY() < rect.getY() + rect.getHeight());
 	}
 	
 	//sets the ball on top of the paddle
@@ -417,6 +444,27 @@ public class Breakout extends Application{
 		gc.setFill(Color.BLACK);
 		gc.fillText("Score: " + score + "    Streak: " + streak 
 				+"    Lives: " +myPaddle.getLives(), 10, 30);
+	}
+	
+	
+	private boolean cornerTest(Rectangle rect, Bouncer ball) {
+		int dToTopLeftCorner = (int) Math.hypot(ball.getCenterX()-rect.getX(), ball.getCenterY()-rect.getY());
+		if(dToTopLeftCorner == ball.getRadius()) {
+			return true;
+		}
+		int dToTopRightCorner = (int) Math.hypot(ball.getCenterX()-rect.getX()+rect.getWidth(), ball.getCenterY()-rect.getY());
+		if(dToTopRightCorner == ball.getRadius()) {
+			return true;
+		}
+		int dToBotLeftCorner = (int) Math.hypot(ball.getCenterX()-rect.getX(), ball.getCenterY()-rect.getY()+rect.getHeight());
+		if(dToBotLeftCorner == ball.getRadius()) {
+			return true;
+		}
+		int dToBotRightCorner = (int) Math.hypot(ball.getCenterX()-rect.getX()+rect.getWidth(), ball.getCenterY()-rect.getY()+rect.getHeight());
+		if(dToBotRightCorner == ball.getRadius()) {
+			return true; 
+		}
+		return false;
 	}
 	
 	

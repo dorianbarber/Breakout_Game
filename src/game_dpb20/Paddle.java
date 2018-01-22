@@ -45,7 +45,6 @@ public class Paddle extends Rectangle{
 	public void powered(Powerup p) {
 		switch(p.getPow()) {
 			case "EXPAND":
-				System.out.println("here");
 				//expand the paddle width temporarily
 				Paddle rect = this;
 				rect.setWidth(WIDTH * 1.5);
@@ -69,7 +68,6 @@ public class Paddle extends Rectangle{
 				}, 6*1000);
 				break;
 			case "HEART":
-				System.out.println("here");
 				this.gainLife();
 				break;
 			default:
