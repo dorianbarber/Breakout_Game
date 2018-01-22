@@ -5,11 +5,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
 public class Block extends Rectangle{
-	private static final int width = 50;
-	private static final int height = 30;
-	private static Color borderColor = Color.BLACK;
-	private static Paint backGround;
+	public static final int WIDTH = 50;
+	public static final int HEIGHT = 30;
+	public static final Color BORDER_COLOR = Color.BLACK;
 	
+	private Paint background;
 	private int hitNumber;
 	private boolean isBroke;
 	private boolean isPermanent = false;
@@ -18,22 +18,22 @@ public class Block extends Rectangle{
 	
 	
 	public Block(int numb, Paint back) {
-		super(width, height);
+		super(WIDTH, HEIGHT);
 		hitNumber = numb;
 		isBroke = false;
 		this.typeOfBlock();
 		this.setFill(getColor());
-		this.setStroke(borderColor);
-		backGround = back;
+		this.setStroke(BORDER_COLOR);
+		background = back;
 	}
 	
 	
 	public static int getBlockHeight() {
-		return height;
+		return HEIGHT;
 	}
 	
 	public static int getBlockWidth() {
-		return width;
+		return WIDTH;
 	}
 	
 	//Color of the block is dependent on the number of hits
@@ -66,8 +66,8 @@ public class Block extends Rectangle{
 	}
 	
 	public void deadBlock() {
-		this.setFill(backGround);
-		this.setStroke(backGround);
+		this.setFill(background);
+		this.setStroke(background);
 	}
 	
 	public boolean isPerm() {

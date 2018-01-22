@@ -4,10 +4,10 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.paint.Color;
 
 public class Paddle extends Rectangle{
-	private static final Color myColor = Color.CRIMSON;
-	private static final int WIDTH = 50;
-	private static final int HEIGHT = 5;
-	private static final int SPEED = 10;
+	public static final Color myColor = Color.CRIMSON;
+	public static final int WIDTH = 50;
+	public static final int HEIGHT = 5;
+	public static final int SPEED = 10;
 	
 	private int lives = 3;
 	

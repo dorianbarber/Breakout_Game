@@ -4,15 +4,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 public class Bouncer extends Circle{
-	private static Color myColor = Color.LINEN;
-	private static int myRadius = 8;
+	public static final Color COLOR = Color.LINEN;
+	public static final int RADIUS = 8;
 	
 	private int xvel = -100;
 	private int yvel = -100;
 	
 	
 	public Bouncer() {
-		super(myRadius, myColor);
+		super(RADIUS, COLOR);
 	}
 	
 	
@@ -37,14 +37,14 @@ public class Bouncer extends Circle{
 	//checks if the ball has hit the y border (top of the screen)
 	//if so it returns false
 	public boolean checkYBounds() {
-		return (this.getCenterY()-myRadius) >= 0;
+		return (this.getCenterY()-RADIUS) >= 0;
 	}
 	
 	//checks if the ball has hit either the right or left side of the screen
 	//if so returns false
 	public boolean checkXBounds(int border) {
-		return ((this.getCenterX() - myRadius) >= 0 
-				&& (this.getCenterX() + myRadius) <= border); 
+		return ((this.getCenterX() - RADIUS) >= 0 
+				&& (this.getCenterX() + RADIUS) <= border); 
 	}
 	
 	
@@ -54,7 +54,7 @@ public class Bouncer extends Circle{
 		yvel = 0;
 		this.setStroke(Color.WHITE);
 		this.setFill(Color.RED);
-		this.setRadius(myRadius*2);
+		this.setRadius(RADIUS*2);
 	}
 	
 }

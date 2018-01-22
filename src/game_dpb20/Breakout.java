@@ -27,10 +27,10 @@ public class Breakout extends Application{
 	public static final double SECOND_DELAY = 1.0 / FRAMES_PER_SECOND;
 	public static final int SIZE = 500;
 	
-	public static final Paint BACKGROUND = Color.BURLYWOOD;
+	private static final Paint BACKGROUND = Color.BURLYWOOD;
 	
-	public static final int paddleX = SIZE/2;
-	public static final int paddleY = SIZE - 50;
+	private static final int paddleX = SIZE/2;
+	private static final int paddleY = SIZE - 50;
 	
 	private Stage st;
 	private Scene myScene;
@@ -191,7 +191,7 @@ public class Breakout extends Application{
 		}
 		if(!powerups.isEmpty()) {
 			for(Powerup p : powerups) {
-				p.setCenterY(p.getCenterY() + p.getVel()*elapsedTime);
+				p.setCenterY(p.getCenterY() + Powerup.Y_VELOCITY*elapsedTime);
 				Shape powAndBall = Shape.intersect(myPaddle, p);
 				//if it makes contact with the paddle or goes off the screen
 				if(powAndBall.getBoundsInLocal().getWidth() != -1) {
