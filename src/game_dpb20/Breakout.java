@@ -96,7 +96,7 @@ public class Breakout extends Application{
 		
 		
 		myBall = new Bouncer();
-		resetBall();
+		myBall.reset(myPaddle);
 		
 		myTarget = new Bouncer();
 		myTarget.setCenterX(SIZE/2);
@@ -128,7 +128,7 @@ public class Breakout extends Application{
 	private void step (double elapsedTime) {
 		//updates the score by filling over the previous scoreboard
 		if(myBall.getCenterY() >= SIZE && myPaddle.getLives() > 0) {
-			resetBall(); 
+			myBall.reset(myPaddle); 
 			if(!unlimitedLives) {
 				myPaddle.loseLife();
 			}
@@ -152,20 +152,8 @@ public class Breakout extends Application{
 		}
 		
 		
-		//checks to see if the ball intersects the paddle
-		Shape intersect = Shape.intersect(myPaddle, myBall);
-		if(intersect.getBoundsInLocal().getWidth() != -1) {
-			//resets the streak count
+		if(myPaddle.paddleBallContact(myBall)){
 			streak = 0;
-			//checks if the ball hits the side of the paddle
-			myBall.bounceY();
-			if(cornerTest(myPaddle, myBall)) {
-				System.out.println("paddle corner contact");
-				myBall.bounceX();
-			} else if(makesSideContact(myPaddle)) {
-				System.out.println("paddle side contact");
-				myBall.bounceX();
-			}
 		}
 		
 		
@@ -218,7 +206,7 @@ public class Breakout extends Application{
 				//if it makes contact with the paddle or goes off the screen
 				if(powAndBall.getBoundsInLocal().getWidth() != -1) {
 					p.powUsed();
-					myPaddle.powered(p);
+					p.powered(myPaddle);
 					root.getChildren().remove(p);
 					if(powerups.isEmpty()) {
 						break;
@@ -241,8 +229,7 @@ public class Breakout extends Application{
 		
 		//checks to see if the bouncer connected with the target
 		// to let the user move on to the next level
-		Shape targetAndBall = Shape.intersect(myTarget, myBall);
-		if(targetAndBall.getBoundsInLocal().getWidth() != -1) {
+		if(myTarget.targetBallContact(myBall)){
 			level += 1;
 			if(level <= 3) {
 				sceneSetUp();
@@ -283,7 +270,7 @@ public class Breakout extends Application{
 			//starts the ball motion if it is not
 			if(myBall.getCenterY() >= SIZE) {
 				gameStart = false;
-				resetBall();
+				myBall.reset(myPaddle);
 			}
 			else {
 				gameStart = true;
@@ -383,15 +370,7 @@ public class Breakout extends Application{
 		changeToMessageScreen(message);
 	}
 	
-	//Checks to see if the ball made contact with the sides of the Block
-	private boolean makesSideContact(Rectangle rect) {
-		double lowerBound = (rect.getY() - myBall.getCenterY());
-		double upperBound = (rect.getY() + myBall.getCenterY());
-		return (myBall.getCenterY() > lowerBound && myBall.getCenterY() < upperBound)
-				&& (myBall.getCenterX() - myBall.getRadius() < rect.getX() 
-						|| myBall.getCenterX() + myBall.getRadius() > rect.getX() + rect.getWidth());
-	}
-	
+
 	private boolean topAndBottom(Rectangle rect, Bouncer b) {
 		return (b.getCenterX() > rect.getX() && b.getCenterX() < rect.getX() + rect.getWidth());
 	}
@@ -400,11 +379,7 @@ public class Breakout extends Application{
 		return (b.getCenterY() > rect.getY() && b.getCenterY() < rect.getY() + rect.getHeight());
 	}
 	
-	//sets the ball on top of the paddle
-	private void resetBall() {
-		myBall.setCenterX(myPaddle.getX() + myPaddle.getWidth()/2);
-		myBall.setCenterY(myPaddle.getY() - myBall.getRadius());
-	}
+
 	
 	//Sets the level number and the score, streak, and lives
 	private void setText() {
@@ -423,25 +398,7 @@ public class Breakout extends Application{
 	}
 	
 	
-	private boolean cornerTest(Rectangle rect, Bouncer ball) {
-		int dToTopLeftCorner = (int) Math.hypot(ball.getCenterX()-rect.getX(), ball.getCenterY()-rect.getY());
-		if(dToTopLeftCorner == ball.getRadius()) {
-			return true;
-		}
-		int dToTopRightCorner = (int) Math.hypot(ball.getCenterX()-rect.getX()+rect.getWidth(), ball.getCenterY()-rect.getY());
-		if(dToTopRightCorner == ball.getRadius()) {
-			return true;
-		}
-		int dToBotLeftCorner = (int) Math.hypot(ball.getCenterX()-rect.getX(), ball.getCenterY()-rect.getY()+rect.getHeight());
-		if(dToBotLeftCorner == ball.getRadius()) {
-			return true;
-		}
-		int dToBotRightCorner = (int) Math.hypot(ball.getCenterX()-rect.getX()+rect.getWidth(), ball.getCenterY()-rect.getY()+rect.getHeight());
-		if(dToBotRightCorner == ball.getRadius()) {
-			return true; 
-		}
-		return false;
-	}
+
 	
 	private void changeToMessageScreen(String message) {
 		Text t = new Text();

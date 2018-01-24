@@ -7,16 +7,16 @@ public abstract class Powerup extends Circle{
 	public static final int RADIUS = 6;
 	public static final int Y_VELOCITY = 60;
 
-	private String thePowerup;
 	private boolean used = false;
 	
-	public Powerup(Color color, String powName) {
+	/**
+	 * Constructs a new powerup with a specific color and name
+	 * 
+	 * @param color
+	 * @param powName
+	 */
+	public Powerup(Color color) {
 		super(RADIUS, color);
-		thePowerup = powName;
-	}
-	
-	public String getPow() {
-		return thePowerup;
 	}
 	
 	public void powUsed() {

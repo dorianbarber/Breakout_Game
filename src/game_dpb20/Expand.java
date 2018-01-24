@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 public class Expand extends Powerup{
 	
 	public Expand() {
-		super(Color.DARKBLUE, "expand");
+		super(Color.DARKBLUE);
 	}
 	
 	@Override
