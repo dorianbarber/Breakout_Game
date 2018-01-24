@@ -4,8 +4,17 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.paint.Color;
 
+/**
+ * To be used as the paddle in the Breakout game
+ * Contains only one speed since it can only move in the x direction
+ * 
+ * Depends on the Bouncer class
+ * Assumes that the background color of the Breakout game is not CRIMZON
+ * @author Dorian
+ *
+ */
 public class Paddle extends Rectangle{
-	public static final Color myColor = Color.CRIMSON;
+	public static final Color COLOR = Color.CRIMSON;
 	public static final int WIDTH = 50;
 	public static final int HEIGHT = 5;
 	public static final int SPEED = 10;
@@ -13,42 +22,80 @@ public class Paddle extends Rectangle{
 	private int lives = 3;
 	private boolean bonusPoints = false;
 	
+	/**
+	 * Constructs a rectangle with WIDTH, HEIGHT, COLOR
+	 */
 	public Paddle() {
-		super(WIDTH, HEIGHT, myColor);
+		super(WIDTH, HEIGHT, COLOR);
 	}
 	
-	public boolean isBonus() {
-		return bonusPoints;
-	}
-	
+	/**
+	 * @return SPEED
+	 */
 	public int getSpeed() {
 		return SPEED;
 	}
 	
+	/**
+	 * The paddle loses a life
+	 */
 	public void loseLife() {
 		lives -= 1;
 	}
 	
+	/**
+	 * The paddle gains a life
+	 */
 	public void gainLife() {
 		lives += 1;
 	}
 	
+	/**
+	 * @return the number of lives the paddle has
+	 */
 	public int getLives() {
 		return lives;
 	}
 	
+	/**
+	 * Used for reseting the number of lives with the R cheat code
+	 * @param numb sets the number of lives
+	 */
 	public void setLives(int numb) {
 		lives = numb;
 	}
 	
+	/**
+	 * @return if it has the bonus points powerup
+	 */
+	public boolean isBonus() {
+		return bonusPoints;
+	}
+	
+	/**
+	 * Sets the bonus points to on
+	 */
 	public void bonusTrue() {
 		bonusPoints = true;
 	}
 	
+	/**
+	 * Sets the bonus points to off
+	 */
 	public void bonusFalse() {
 		bonusPoints = false;
 	}
 	
+	/**
+	 * Goes through two different cases where the ball
+	 * makes contact with the paddle
+	 * either on the top or on the sides/corners 
+	 * (ideally behaves the same way when it hits the sides 
+	 * as it does with the corners)
+	 * 
+	 * @param ball represents the ball in the breakout game
+	 * @return whether or not the paddle makes contact with the ball
+	 */
 	public boolean paddleBallContact(Bouncer ball) {
 		//checks to see if the ball intersects the paddle
 		Shape intersect = Shape.intersect(this, ball);
@@ -66,32 +113,4 @@ public class Paddle extends Rectangle{
 		}
 		return false;
 	}
-	
-//	private boolean cornerTest(Bouncer ball) {
-//		int dToTopLeftCorner = (int) Math.hypot(ball.getCenterX()-this.getX(), ball.getCenterY()-this.getY());
-//		if(dToTopLeftCorner == ball.getRadius()) {
-//			return true;
-//		}
-//		int dToTopRightCorner = (int) Math.hypot(ball.getCenterX()-this.getX()+this.getWidth(), ball.getCenterY()-this.getY());
-//		if(dToTopRightCorner == ball.getRadius()) {
-//			return true;
-//		}
-//		int dToBotLeftCorner = (int) Math.hypot(ball.getCenterX()-this.getX(), ball.getCenterY()-this.getY()+this.getHeight());
-//		if(dToBotLeftCorner == ball.getRadius()) {
-//			return true;
-//		}
-//		int dToBotRightCorner = (int) Math.hypot(ball.getCenterX()-this.getX()+this.getWidth(), ball.getCenterY()-this.getY()+this.getHeight());
-//		if(dToBotRightCorner == ball.getRadius()) {
-//			return true; 
-//		}
-//		return false;
-//	}
-//	
-//	private boolean makesSideContact(Bouncer ball) {
-//		double lowerBound = (this.getY() - ball.getCenterY());
-//		double upperBound = (this.getY() + ball.getCenterY());
-//		return (ball.getCenterY() > lowerBound && ball.getCenterY() < upperBound)
-//				&& (ball.getCenterX() - ball.getRadius() < this.getX() 
-//						|| ball.getCenterX() + ball.getRadius() > this.getX() + this.getWidth());
-//	}
 }
