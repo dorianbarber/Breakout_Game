@@ -8,6 +8,8 @@ import javafx.scene.shape.Circle;
  * 
  * There is an assumption that the subclasses will have different
  * colors so that the player can differentiate the powerups
+ * 
+ * Depends on the Block class
  * @author Dorian
  *
  */

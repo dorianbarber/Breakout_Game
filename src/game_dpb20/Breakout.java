@@ -1,6 +1,5 @@
 package game_dpb20;
 import java.util.ArrayList;
-
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;

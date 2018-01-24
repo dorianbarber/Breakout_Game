@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
  * Heart class which extends Powerup
  * @author Dorian
  *
+ * Depends on the Paddle class
  */
 public class Heart extends Powerup{
 	

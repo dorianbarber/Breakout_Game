@@ -9,6 +9,7 @@ import javafx.scene.paint.Color;
  * Expand class which extends Powerup
  * @author Dorian
  *
+ * Depends on the Paddle class
  */
 public class Expand extends Powerup{
 	

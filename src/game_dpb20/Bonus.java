@@ -8,7 +8,8 @@ import javafx.scene.paint.Color;
 /**
  * Bonus class which extends Powerup
  * @author Dorian
- *
+ * 
+ * Depends on the Paddle class
  */
 public class Bonus extends Powerup{
 	
