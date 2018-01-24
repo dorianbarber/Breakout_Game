@@ -8,8 +8,8 @@ public class Heart extends Powerup{
 		super(Color.CRIMSON, "heart");	
 	}
 	
-	
-	public void powered(Heart p, Paddle paddle) {
+	@Override
+	public void powered(Paddle paddle) {
 		paddle.gainLife();
 	}
 }

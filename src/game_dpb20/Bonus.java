@@ -11,7 +11,8 @@ public class Bonus extends Powerup{
 		super(Color.GREEN, "double");
 	}
 
-	public void powered(Bonus p, Paddle paddle) {
+	@Override
+	public void powered(Paddle paddle) {
 		paddle.bonusTrue();
 		Timer doubleTimer = new Timer();				doubleTimer.schedule(new TimerTask() {
 		@Override

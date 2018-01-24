@@ -4,7 +4,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 
 public class Expand extends Powerup{
 	
@@ -12,7 +11,8 @@ public class Expand extends Powerup{
 		super(Color.DARKBLUE, "expand");
 	}
 	
-	public void powered(Expand p, Paddle paddle) {
+	@Override
+	public void powered(Paddle paddle) {
 		Paddle rect = paddle;
 		rect.setWidth(paddle.getWidth() * 1.5);
 		Timer expandTimer = new Timer();

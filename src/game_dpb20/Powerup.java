@@ -3,7 +3,7 @@ package game_dpb20;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
-public class Powerup extends Circle{
+public abstract class Powerup extends Circle{
 	public static final int RADIUS = 6;
 	public static final int Y_VELOCITY = 60;
 
@@ -27,6 +27,5 @@ public class Powerup extends Circle{
 		return used;
 	}
 	
-	public void powered(Powerup p, Paddle paddle) {
-	}
+	public abstract void powered(Paddle paddle); 
 }
