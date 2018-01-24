@@ -11,7 +11,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -164,20 +163,8 @@ public class Breakout extends Application{
 			Shape blockAndBall = Shape.intersect(myBall, b);
 			if(blockAndBall.getBoundsInLocal().getWidth() != -1 && !b.checkBroke()) {
 				
-				if(sideAndSide(b,myBall)) {
-					myBall.bounceX();
-				}
-				else if (topAndBottom(b,myBall)) {
-					myBall.bounceY();
-				}
-				else {
-					myBall.bounceX();
-					myBall.bounceY();
-				}
-				b.hit();
-				if(b.checkBroke()) {
-					b.deadBlock();
-				}
+				b.ballContact(myBall);
+				
 				if(!b.isPerm()) {
 					streak += 1;
 					if(streak > longestStreak) {
@@ -190,6 +177,7 @@ public class Breakout extends Application{
 						score += streak;
 					}
 				}
+				
 				if(b.isPowed()) {
 					Powerup faller = b.getPowerup();
 					faller.setCenterX(b.getX() + b.getWidth()/2);
@@ -371,13 +359,7 @@ public class Breakout extends Application{
 	}
 	
 
-	private boolean topAndBottom(Rectangle rect, Bouncer b) {
-		return (b.getCenterX() > rect.getX() && b.getCenterX() < rect.getX() + rect.getWidth());
-	}
-	
-	private boolean sideAndSide(Rectangle rect, Bouncer b) {
-		return (b.getCenterY() > rect.getY() && b.getCenterY() < rect.getY() + rect.getHeight());
-	}
+
 	
 
 	

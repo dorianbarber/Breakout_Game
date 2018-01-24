@@ -9,7 +9,7 @@ public class Block extends Rectangle{
 	public static final int HEIGHT = 30;
 	public static final Color BORDER_COLOR = Color.BLACK;
 	
-	private Paint background;
+	private Paint deadColor;
 	private int hitNumber;
 	private boolean isBroke;
 	private boolean isPermanent = false;
@@ -29,7 +29,7 @@ public class Block extends Rectangle{
 		this.typeOfBlock();
 		this.setFill(getColor());
 		this.setStroke(BORDER_COLOR);
-		background = back;
+		deadColor = back;
 	}
 	
 	
@@ -57,7 +57,7 @@ public class Block extends Rectangle{
 		return Color.DARKSALMON;
 	}
 	
-	public void hit() {
+	private void hit() {
 		hitNumber -= 1;
 		this.setFill(getColor());
 	}
@@ -69,9 +69,9 @@ public class Block extends Rectangle{
 		return isBroke;
 	}
 	
-	public void deadBlock() {
-		this.setFill(background);
-		this.setStroke(background);
+	private void deadBlock() {
+		this.setFill(deadColor);
+		this.setStroke(deadColor);
 	}
 	
 	public boolean isPerm() {
@@ -84,6 +84,24 @@ public class Block extends Rectangle{
 	
 	public Powerup getPowerup() {
 		return pow;
+	}
+	
+	
+	public void ballContact(Bouncer ball) {
+		if(ball.getCenterX() > this.getX() && ball.getCenterX() < this.getX() + this.getWidth()) {
+			ball.bounceY();
+		}
+		else if(ball.getCenterY() > this.getY() && ball.getCenterY() < this.getY() + this.getHeight()) {
+			ball.bounceX();
+		}
+		else {
+			ball.bounceX();
+			ball.bounceY();
+		}
+		hit();
+		if(checkBroke()) {
+			deadBlock();
+		}
 	}
 	
 	//uses a random functon to decide what kind of block
