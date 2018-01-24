@@ -42,6 +42,15 @@ public class Paddle extends Rectangle{
 		lives = numb;
 	}
 	
+	public void bonusTrue() {
+		bonusPoints = true;
+	}
+	
+	public void bonusFalse() {
+		bonusPoints = false;
+	}
+	
+	
 	public void powered(Powerup p) {
 		switch(p.getPow()) {
 			case "EXPAND":

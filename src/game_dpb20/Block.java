@@ -91,9 +91,17 @@ public class Block extends Rectangle{
 			isPermanent = true;
 			hitNumber = -1;
 		}
-		else if(rand >= 1 && rand <= 3) {
+		if(rand == 1) {
 			hasPowerup = true;
-			pow = new Powerup(rand);
+			pow = new Heart();
+		}
+		else if(rand == 2) {
+			hasPowerup = true;
+			pow = new Bonus();
+		}
+		else if(rand == 3) {
+			hasPowerup = true;
+			pow = new Expand();
 		}
 	}
 }
