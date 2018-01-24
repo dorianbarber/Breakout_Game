@@ -15,6 +15,11 @@ public class Block extends Rectangle{
 	private boolean isPermanent = false;
 	private boolean hasPowerup = false;
 	private Powerup pow;
+	private Powerup[] possiblePows ={
+		new Heart(),
+		new Bonus(),
+		new Expand()
+	};
 	
 	
 	public Block(int numb, Paint back) {
@@ -91,17 +96,10 @@ public class Block extends Rectangle{
 			isPermanent = true;
 			hitNumber = -1;
 		}
-		if(rand == 1) {
+		if(rand >= 1 && rand <= 3) {
+			int numb = (int) Math.random()*possiblePows.length;
 			hasPowerup = true;
-			pow = new Heart();
-		}
-		else if(rand == 2) {
-			hasPowerup = true;
-			pow = new Bonus();
-		}
-		else if(rand == 3) {
-			hasPowerup = true;
-			pow = new Expand();
+			pow = possiblePows[numb];
 		}
 	}
 }
