@@ -57,11 +57,6 @@ public class Block extends Rectangle{
 		return Color.DARKSALMON;
 	}
 	
-	private void hit() {
-		hitNumber -= 1;
-		this.setFill(getColor());
-	}
-	
 	public boolean checkBroke() {
 		if(hitNumber == 0) {
 			isBroke = true;
@@ -88,9 +83,11 @@ public class Block extends Rectangle{
 	
 	
 	public void ballContact(Bouncer ball) {
+		//checks if the ball has hit the top or bottom of the block
 		if(ball.getCenterX() > this.getX() && ball.getCenterX() < this.getX() + this.getWidth()) {
 			ball.bounceY();
 		}
+		//checks if the ball has hit the sides of the block
 		else if(ball.getCenterY() > this.getY() && ball.getCenterY() < this.getY() + this.getHeight()) {
 			ball.bounceX();
 		}
@@ -98,7 +95,8 @@ public class Block extends Rectangle{
 			ball.bounceX();
 			ball.bounceY();
 		}
-		hit();
+		hitNumber -= 1;
+		this.setFill(getColor());
 		if(checkBroke()) {
 			deadBlock();
 		}
@@ -115,7 +113,8 @@ public class Block extends Rectangle{
 			hitNumber = -1;
 		}
 		if(rand >= 1 && rand <= 3) {
-			int numb = (int) Math.random()*possiblePows.length;
+			int numb = (int) (Math.random()*possiblePows.length);
+			System.out.println(possiblePows.length);
 			hasPowerup = true;
 			pow = possiblePows[numb];
 		}

@@ -92,8 +92,6 @@ public class Breakout extends Application{
 		powerups = new ArrayList<>();
 		powerups.clear();
 		
-		
-		
 		myBall = new Bouncer();
 		myBall.reset(myPaddle);
 		
@@ -150,13 +148,9 @@ public class Breakout extends Application{
 			myBall.setCenterY(myBall.getCenterY() + myBall.getYVel() * elapsedTime);
 		}
 		
-		
 		if(myPaddle.paddleBallContact(myBall)){
 			streak = 0;
 		}
-		
-		
-		
 		//checks if the ball makes contact with any of the blocks
 		//must loop through all the blocks
 		for(Block b: gameBlocks) {
@@ -177,11 +171,9 @@ public class Breakout extends Application{
 						score += streak;
 					}
 				}
-				
 				if(b.isPowed()) {
 					Powerup faller = b.getPowerup();
-					faller.setCenterX(b.getX() + b.getWidth()/2);
-					faller.setCenterY(b.getY() + b.getHeight()/2);
+					faller.setPos(b);
 					root.getChildren().add(faller);
 					powerups.add(faller);
 				}

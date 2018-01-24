@@ -5,12 +5,27 @@ import java.util.TimerTask;
 
 import javafx.scene.paint.Color;
 
+/**
+ * Expand class which extends Powerup
+ * @author Dorian
+ *
+ */
 public class Expand extends Powerup{
 	
+	/**
+	 * For constructing an instance of the Expand class
+	 * Assumption that this is the only Powerup subclass with the color DARKBLUE
+	 */
 	public Expand() {
 		super(Color.DARKBLUE);
 	}
 	
+	/**
+	 * The implemented powered method from the super class Powerup
+	 * 
+	 * Temporarily makes the paddle wider
+	 * No null pointer check on @param paddle
+	 */
 	@Override
 	public void powered(Paddle paddle) {
 		Paddle rect = paddle;
