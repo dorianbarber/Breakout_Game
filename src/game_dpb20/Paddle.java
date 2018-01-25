@@ -66,6 +66,13 @@ public class Paddle extends Rectangle{
 	}
 	
 	/**
+	 * Used for reseting the the paddle width to its
+	 * original size
+	 */
+	public int getStandardWidth() {
+		return WIDTH;
+	}
+	/**
 	 * @return if it has the bonus points powerup
 	 */
 	public boolean isBonus() {

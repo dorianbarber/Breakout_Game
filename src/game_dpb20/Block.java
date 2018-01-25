@@ -164,7 +164,6 @@ public class Block extends Rectangle{
 		}
 		if(rand >= 1 && rand <= 3) {
 			int numb = (int) (Math.random()*possiblePows.length);
-			System.out.println(possiblePows.length);
 			hasPowerup = true;
 			pow = possiblePows[numb];
 		}

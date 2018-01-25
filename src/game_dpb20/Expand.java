@@ -29,13 +29,12 @@ public class Expand extends Powerup{
 	 */
 	@Override
 	public void powered(Paddle paddle) {
-		Paddle rect = paddle;
-		rect.setWidth(paddle.getWidth() * 1.5);
+		paddle.setWidth(paddle.getWidth() * 1.5);
 		Timer expandTimer = new Timer();
 		expandTimer.schedule(new TimerTask() {
 			@Override
 			public void run() {
-				rect.setWidth(paddle.getWidth());
+				paddle.setWidth(paddle.getStandardWidth());
 			}
 		}, 6*1000);
 	}

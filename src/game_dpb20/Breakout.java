@@ -16,7 +16,13 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
+/**
+ * JavaFX program that represents a spin off of the classic Atari Breakout game
+ * 
+ * Depends on Paddle, Bouncer, Bonus, and Powerup classes
+ * @author Dorian
+ *
+ */
 public class Breakout extends Application{
 	public static final String TITLE = "Breakout Game - dpb20";
 	public static final int FRAMES_PER_SECOND = 60;
@@ -55,6 +61,9 @@ public class Breakout extends Application{
 	private Canvas canvas = new Canvas(SIZE,SIZE);
 	private GraphicsContext gc = canvas.getGraphicsContext2D();
 
+	/**
+	 * Starts the actual game or sends it to the instructional splash screen
+	 */
 	public void start(Stage stage) {
 		st = stage;
 		score = 0;
@@ -80,6 +89,10 @@ public class Breakout extends Application{
 
 	}
 
+	/**
+	 * Sets up the scene and runs an algorithm which generates the 
+	 * block set up depending on the level the player is on
+	 */
 	private Scene setupGame(int width, int height, Paint background, int levelNumb) {
 		root = new Group();
 		Scene scene = new Scene(root, width, height, background);
@@ -97,10 +110,10 @@ public class Breakout extends Application{
 		myTarget.setCenterX(SIZE/2);
 		myTarget.setCenterY(SIZE/6);
 		myTarget.changeToTarget();
-		//Canvas for scoreboard
+		//Canvas for scoreboard, lives, streak, and level number
 		root.getChildren().add(canvas);
 
-		//sets up the blocks
+		//sets up the blocks depending on the level
 		for(int row = 1; row <= levelNumb; row++) {
 			int ypos = SIZE*5/8 - row*2*Block.getBlockHeight();
 			for(int xpos = Block.getBlockWidth()/2; xpos < SIZE; xpos += 2*Block.getBlockWidth()) {
@@ -120,6 +133,11 @@ public class Breakout extends Application{
 		return scene;
 	}
 
+	/**
+	 * Game loop:
+	 * 		checks the score, moves the ball, checks for contact on blocks, paddle, and target
+	 * 		updates the necessary variables according to the event
+	 */
 	private void step (double elapsedTime) {
 		//updates the score by filling over the previous scoreboard
 		if(myBall.getCenterY() >= SIZE && myPaddle.getLives() > 0) {
@@ -133,7 +151,6 @@ public class Breakout extends Application{
 		setText();
 		
 		//checks to see if the player has started the game
-		//which prompts the ball to start moving
 		if(gameStart) {
 			if(!myBall.checkXBounds(SIZE)) {
 				myBall.bounceX();
@@ -181,7 +198,7 @@ public class Breakout extends Application{
 			if(!p.isUsed()) {
 				p.setCenterY(p.getCenterY() + Powerup.Y_VELOCITY*elapsedTime);
 				Shape powAndBall = Shape.intersect(myPaddle, p);
-				//if it makes contact with the paddle or goes off the screen
+				//if it makes contact with the paddle
 				if(powAndBall.getBoundsInLocal().getWidth() != -1) {
 					p.powUsed();
 					p.powered(myPaddle);
@@ -215,6 +232,11 @@ public class Breakout extends Application{
 		}
 	}
 
+	/**
+	 * Handles key inputs during the actual game 
+	 * This inputs are only valid if in the Breakout game
+	 * They are not valid in any of the splash screens(instructional, game over, or congratulations)
+	 */
 	private void handleKeyInput(KeyCode code) {
 		//the additional boolean checks for if the paddle is about to go off the screen
 		if(code == KeyCode.RIGHT
@@ -279,6 +301,9 @@ public class Breakout extends Application{
 		}
 	}
 
+	/**
+	 * The only key that can be pressed in any of the splash screens
+	 */
 	private void handleSplashScreenInput(KeyCode code) {
 		if(code == KeyCode.SPACE) {
 			if(loadScreen) {
@@ -297,6 +322,9 @@ public class Breakout extends Application{
 		}
 	}
 
+	/**
+	 * Extracted code for setting up the scene and adjusting the proper variables 
+	 */
 	public void sceneSetUp() {
 		gameStart = false;
 		myScene = setupGame(SIZE, SIZE, BACKGROUND, level);
@@ -306,6 +334,7 @@ public class Breakout extends Application{
 		streak = 0;
 	}
 
+	//Message for the instructional splash screen
 	public void splashScreen() {
 		String message = ("Welcome to Breakout!\n"
 				+ "Use the right and left arrow keys to move the paddle.\n"
@@ -324,6 +353,7 @@ public class Breakout extends Application{
 		changeToMessageScreen(message);
 	}
 
+	//message for the player when they have completed all three levels
 	public void endScreen() {
 		String message = ("Congratulations you have won!!!!\n"
 				+ "Your score was: " + score +"\n"
@@ -334,6 +364,7 @@ public class Breakout extends Application{
 		changeToMessageScreen(message);
 	}
 
+	//message for the player when they have died
 	public void gameOverScreen() {
 		String message = ("GAME OVER\n"
 				+ "Awww shucks it looks like you've\n"
@@ -360,6 +391,10 @@ public class Breakout extends Application{
 				+"    Lives: " +myPaddle.getLives(), 10, 30);
 	}
 
+	/**
+	 * Extracted code which implements the three splash screens depending
+	 * on the message passed
+	 */
 	private void changeToMessageScreen(String message) {
 		Text t = new Text();
 		t.setFont(new Font(17));
