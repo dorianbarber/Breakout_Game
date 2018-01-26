@@ -46,8 +46,8 @@ simply move up and down along the wall.
 My overall impression of the assignment was that as a whole it was nicely designed. I think the main purpose of the assignment was to give people experience with starting a project from scratch and it did it beautiful. Coding a project can be a daunting task but this project does a good job of forcing people to do it. 
 
 Accessible cheat codes:
-R -- resets the level completely
-1 -- Sends the game back to level 1
-2 -- Sends the game to level 2
-3 -- Sends the game to level 3
-U (toggle) -- on - prevents the player from losing a life
+*R -- resets the level completely
+*1 -- Sends the game back to level 1
+*2 -- Sends the game to level 2
+*3 -- Sends the game to level 3
+*U (toggle) -- on - prevents the player from losing a life
